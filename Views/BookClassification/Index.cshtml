@@ -3,16 +3,24 @@
 
 @{
     ViewData["Title"] = "Index";
+
+    var Key = Context.Session.GetString("USER_LOGIN_KEY");
 }
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (Key == "admin")
+
+
+
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
 @* 검색 *@
 <form asp-controller="BookClassification" asp-action="Index" method="get">
-    <p> 
+    <p>
         <select asp-for="BookGenre" asp-items="Model.Genre">
             <option value="">All</option>
         </select>
@@ -61,9 +69,12 @@
                     @Html.DisplayFor(modelItem => item.BOOK_PRICE)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.BOOK_NUM">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.BOOK_NUM">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.BOOK_NUM">Delete</a>
+                    @if (Key == "admin")
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.BOOK_NUM">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.BOOK_NUM">Delete</a>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.BOOK_NUM">Details</a>
                 </td>
             </tr>
         }

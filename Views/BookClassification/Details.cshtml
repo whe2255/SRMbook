@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Details";
+
+    var Key = Context.Session.GetString("USER_LOGIN_KEY");
 }
 
 <h1>Details</h1>
@@ -10,39 +12,44 @@
     <h4>BookClassification</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.BOOK_CLASS)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.BOOK_CLASS)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.BOOK_NAME)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.BOOK_NAME)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.BOOK_WRITER)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.BOOK_WRITER)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PUBLISHER)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PUBLISHER)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.BOOK_PRICE)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.BOOK_PRICE)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.BOOK_NUM">Edit</a> |
+    @if (Key == "admin")
+
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.BOOK_NUM">Edit</a>
+    }
+
     <a asp-action="Index">Back to List</a>
 </div>

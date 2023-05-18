@@ -29,7 +29,7 @@ namespace SrmBook.Controllers
 
                     if (user != null)
                     {
-                        HttpContext.Session.SetInt32("USER_LOGIN_KEY", user.USER_NUM);
+                        HttpContext.Session.SetString("USER_LOGIN_KEY", user.USER_TYPE);
                         return RedirectToAction("Index", "Home");
                     }
 
@@ -38,6 +38,11 @@ namespace SrmBook.Controllers
 
             }
             return View(model);
+        }
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("USER_LOGIN_KEY");
+            return RedirectToAction("index", "Home");
         }
         [HttpGet]
         public IActionResult Register()

@@ -15,13 +15,21 @@
     <div class="form-group">
         <label> 사용자 비밀번호</label>
         <input type="password" class="form-control" asp-for="USER_PW" placeholder="사용자 비밀번호 입력" />
-        <span class="text-danger" asp-validation-for="USER_PW" ></span>
+        <span class="text-danger" asp-validation-for="USER_PW"></span>
     </div>
 
     <div class="form-group">
         <label> 사용자 이름</label>
         <input type="text" class="form-control" asp-for="USER_NAME" placeholder="사용자 이름 입력" />
-        <span class="text-danger" asp-validation-for="USER_NAME" ></span>
+        <span class="text-danger" asp-validation-for="USER_NAME"></span>
+    </div>
+
+    <div class="form-group">
+        <label> 사용자 분류</label>
+        <select asp-for="USER_TYPE" asp-validation-for="USER_TYPE">
+            <option value="partner">협력사</option>
+            <option value="friend" selected="selected">일반회원</option>
+        </select>
     </div>
 
     <div class="form-group">
