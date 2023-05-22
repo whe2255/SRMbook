@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using SrmBook.Data;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<PartnerManagementContext>(options =>
