@@ -2,13 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using SrmBook.Data;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<PartnerManagementContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("PartnerManagementContext") ?? throw new InvalidOperationException("Connection string 'PartnerManagementContext' not found.")));
 builder.Services.AddDbContext<BookClassificationContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BookClassificationContext") ?? throw new InvalidOperationException("Connection string 'BookClassificationContext' not found.")));
+builder.Services.AddDbContext<BookUserContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BookUserContext") ?? throw new InvalidOperationException("Connection string 'BookUserContext' not found.")));
 builder.Services.AddControllersWithViews();
+
 
 builder.Services.AddSession(options =>
 {
@@ -37,5 +41,4 @@ app.UseSession();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
 app.Run();

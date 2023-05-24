@@ -16,11 +16,11 @@ namespace SrmBook.Controllers
 
         public async Task<IActionResult> Index(string searchString)
         {
-            //검색
             if (_context.PartnerManagement == null)
             {
                 return Problem("Entity set 'PartnerManagement' is null.");
             }
+            //검색
             var PartnerManagement = from m in _context.PartnerManagement
                                     select m;
 

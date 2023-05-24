@@ -1,0 +1,41 @@
+@model SrmBook.Models.BookUser
+
+<h2>Edit User</h2>
+
+@using (Html.BeginForm("Edit", "BookUser", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(m => m.USER_NUM)
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.USER_NAME)
+        @Html.TextBoxFor(m => m.USER_NAME, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.USER_NAME)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.USER_ID)
+        @Html.TextBoxFor(m => m.USER_ID, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.USER_ID)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.USER_PW)
+        @Html.PasswordFor(m => m.USER_PW, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.USER_PW)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.USER_TYPE)
+        @Html.DropDownListFor(m => m.USER_TYPE, new List<SelectListItem>
+    {
+    new SelectListItem { Value = "friend", Text = "일반회원" },
+    new SelectListItem { Value = "partner", Text = "협력사" }
+    }, "선택해주세요")
+        @Html.ValidationMessageFor(m => m.USER_TYPE)
+    </div>
+
+    <input type="submit" value="Save" class="btn btn-primary" />
+}
+

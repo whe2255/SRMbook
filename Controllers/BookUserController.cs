@@ -1,111 +1,188 @@
-using System.Text;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SrmBook.Data;
 using SrmBook.Models;
+using System.Linq;
 using System.Security.Cryptography;
-
+using System.Threading.Tasks;
 
 namespace SrmBook.Controllers
 {
     public class BookUserController : Controller
     {
-        [HttpGet]
-        public IActionResult Login()
+        private readonly BookUserContext _context;
+
+        public BookUserController(BookUserContext context)
         {
-            return View();
+            _context = context;
         }
-
-        [HttpPost]
-        public IActionResult Login(BookLoginView model)
-        {
-             //sha256 단방향 암호화 후 비교하여 로그인
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                byte[] inputBytes = Encoding.UTF8.GetBytes(model.USER_PW);
-                byte[] hashBytes = sha256.ComputeHash(inputBytes);
-                string enteredPasswordHash = BitConverter.ToString(hashBytes).Replace("-", "");
-
-                if (ModelState.IsValid)
-                {
-                    using (var db = new BookUserContext())
-                    {
-                        var user = db.BookUser.FirstOrDefault(u => u.USER_ID == model.USER_ID && u.USER_PW == enteredPasswordHash); // 아이디 비밀번호 매칭
-
-                        if (user != null)//세션 부여
-                        {
-                            HttpContext.Session.SetString("USER_LOGIN_KEY", user.USER_TYPE);
-                            return RedirectToAction("Index", "Home");
-                        }
-                    }
-                }
-                ModelState.AddModelError(string.Empty, "사용자 ID 혹은 비밀번호가 올바르지 않습니다.");
-
-            }
-
-            return View(model);
-        }
-        public IActionResult Logout()
-        {
-            HttpContext.Session.Remove("USER_LOGIN_KEY");
-            return RedirectToAction("index", "Home");
-        }
+        // 회원 가입
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
-
         [HttpPost]
         public IActionResult Register(BookUser model)
         {
-            //sha256 단방향 암호화
-            string input = model.USER_PW;
-            byte[] inputBytes = Encoding.UTF8.GetBytes(input);
-
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                byte[] hashBytes = sha256.ComputeHash(inputBytes);
-
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < hashBytes.Length; i++)
-                {
-                    builder.Append(hashBytes[i].ToString("x2"));
-                }
-
-                model.USER_PW = builder.ToString();
-            }
-            //id중복체크
-            if (IsDuplicateId(model))
-            {
-                ModelState.AddModelError("USER_ID", "중복된 ID입니다.");
-            }
             if (ModelState.IsValid)
             {
-                using (var db = new BookUserContext())
+                //id중복체크
+                if (IsIdDuplicate(model.USER_ID))
                 {
-                    db.BookUser.Add((model));
-                    db.SaveChanges();
+                    ModelState.AddModelError("USER_ID", "이미 사용 중인 아이디입니다.");
+                    return View(model);
                 }
+                // 비밀번호 암호화
+                string hashedPassword = HashPassword(model.USER_PW);
+                model.USER_PW = hashedPassword;
+                _context.BookUser.Add(model);
+                _context.SaveChanges();
+
                 return RedirectToAction("Index", "Home");
             }
 
             return View(model);
         }
-        //id중복체크
-        private bool IsDuplicateId(BookUser model)
+        // 회원 정보
+        public IActionResult Index()
         {
-            using (var db = new BookUserContext())
-            {
-                // 해당 ID를 데이터베이스에서 조회합니다.
-                var existingItem = db.BookUser.FirstOrDefault(u => u.USER_ID == model.USER_ID);
+            var users = _context.BookUser.ToList();
+            return View(users);
+        }
+        // 로그인
+        [HttpGet]
+        public IActionResult Login()
+        {
+            var model = new LoginView();
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult Login(LoginView model)
+        {
+            var user = _context.BookUser.FirstOrDefault(u => u.USER_ID == model.USER_ID);
 
-                // 중복 여부를 확인합니다.
-                if (existingItem != null)
-                {
-                    return true;
-                }
+            if (user == null || !VerifyPassword(model.USER_PW, user.USER_PW))//암호화된 비밀번호 검증
+            {
+                ModelState.AddModelError("LoginFailed", "아이디 또는 비밀번호가 잘못되었습니다.");
+                return View();
             }
-            return false;
+
+            HttpContext.Session.SetString("USER_LOGIN_KEY", user.USER_TYPE); // 권한 세션
+            HttpContext.Session.SetString("USER_SESSION_KEY", user.USER_ID); // 구별용 세션
+
+            return RedirectToAction("Index", "Home");
+        }
+        // 로그아웃
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
+        // 회원 수정
+        [HttpGet]
+        public IActionResult Edit(int userNum)
+        {
+            var user = _context.BookUser.FirstOrDefault(u => u.USER_NUM == userNum);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+        [HttpPost]
+        public IActionResult Edit(BookUser model)
+        {
+            if (ModelState.IsValid)
+            {
+                //비밀번호 암호화
+                string hashedPassword = HashPassword(model.USER_PW);
+                model.USER_PW = hashedPassword;
+                _context.Entry(model).State = EntityState.Modified;
+                _context.SaveChanges();
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(model);
+        }
+        // 회원 삭제
+        [HttpGet]
+        public IActionResult Delete(int userNum)
+        {
+            var user = _context.BookUser.FirstOrDefault(u => u.USER_NUM == userNum);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+        [HttpPost]
+        public IActionResult DeleteConfirmed(BookUser model)
+        {
+            var user = _context.BookUser.FirstOrDefault(u => u.USER_NUM == model.USER_NUM);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            _context.BookUser.Remove(user);
+            _context.SaveChanges();
+            HttpContext.Session.Clear();
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        // 비밀번호 암호화
+        private string HashPassword(string password)
+        {
+            byte[] salt = new byte[128 / 8]; // 솔트 생성
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(salt);
+            }
+
+            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA256,
+                iterationCount: 10000,
+                numBytesRequested: 256 / 8));
+
+            return $"{Convert.ToBase64String(salt)}.{hashed}";
+        }
+
+        // 비밀번호 검증
+        private bool VerifyPassword(string password, string hashedPassword)
+        {
+            string[] parts = hashedPassword.Split('.', 2);
+            if (parts.Length != 2)
+            {
+                return false;
+            }
+
+            byte[] salt = Convert.FromBase64String(parts[0]);
+            string hashed = parts[1];
+
+            string rehashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA256,
+                iterationCount: 10000,
+                numBytesRequested: 256 / 8));
+
+            return hashed == rehashed;
+        }
+        //id중복체크
+        private bool IsIdDuplicate(string Id)
+        {
+            return _context.BookUser.Any(u => u.USER_ID == Id);
         }
     }
 }

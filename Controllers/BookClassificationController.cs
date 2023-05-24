@@ -17,12 +17,11 @@ namespace SrmBook.Controllers
 
         public async Task<IActionResult> Index(string searchString, string BookGenre)
         {
-            //검색
             if (_context.BookClassification == null)
             {
                 return Problem("Entity set 'BookClassification'  is null.");
             }
-            //장르별 검색
+            //장르별 검색, 검색
             IQueryable<string> genreQuery = from m in _context.BookClassification
                                             orderby m.BOOK_CLASS
                                             select m.BOOK_CLASS;

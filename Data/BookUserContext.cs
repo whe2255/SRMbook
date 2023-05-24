@@ -9,11 +9,12 @@ namespace SrmBook.Data
 {
     public class BookUserContext : DbContext
     {
-        public DbSet<SrmBook.Models.BookUser> BookUser { get; set; } = default!;
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public BookUserContext(DbContextOptions<BookUserContext> options) : base(options)
         {
-            optionsBuilder.UseSqlServer("Server=DESKTOP-NV33LNS\\SQLEXPRESS;Database=SRMBOOK;Trusted_Connection=True; encrypt=false");
         }
+        
+        public DbSet<SrmBook.Models.BookUser> BookUser { get; set; } = default!;
+        
     }
+
 }

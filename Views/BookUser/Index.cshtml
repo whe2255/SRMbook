@@ -1,0 +1,38 @@
+@model IEnumerable<SrmBook.Models.BookUser>
+
+@{
+    var Key = Context.Session.GetString("USER_SESSION_KEY");
+}
+<h2>User List</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>USER_NAME</th>
+            <th>USER_ID</th>
+            <th>USER_TYPE</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            if (Key == user.USER_ID)//로그인한 본인만 정보가 보이고 수정 삭제가 가능
+            {
+                <tr>
+                    <td>@user.USER_NAME</td>
+                    <td>@user.USER_ID</td>
+                    <td>@user.USER_TYPE</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { userNum = user.USER_NUM }, new { @class = "btn btn-primary" })
+                        @using (Html.BeginForm("Delete", "BookUser", FormMethod.Get))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("userNum", user.USER_NUM)
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
