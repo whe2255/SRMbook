@@ -1,39 +1,39 @@
 @model SrmBook.Models.BookUser
 
-<h2>회원가입</h2>
+<h2>Register</h2>
 
-<!-- 폼을 Account 컨트롤러 Register 메서드로 넘겨준다. -->
-<form class="form-horizontal" method="post" asp-controller="BookUser" asp-action="Register">
-    <div class="form-group">
-        <label> 사용자 ID</label> <!-- Models의 User의 UserId에 매칭시켜 값을 넘겨준다. -->
-        <input type="text" class="form-control" asp-for="USER_ID" placeholder="사용자 ID 입력" />
-        <!-- span 태그를 이용해 asp-validation-for 를 이용하면 값을 넣지 않을경우 경고문이 뜬다. -->
-        <span class="text-danger" asp-validation-for="USER_ID"></span>
-    </div>
+@using (Html.BeginForm("Register", "BookUser", FormMethod.Post))
 
+{
+    @Html.AntiForgeryToken()
 
     <div class="form-group">
-        <label> 사용자 비밀번호</label>
-        <input type="password" class="form-control" asp-for="USER_PW" placeholder="사용자 비밀번호 입력" />
-        <span class="text-danger" asp-validation-for="USER_PW"></span>
+        @Html.LabelFor(m => m.USER_NAME)
+        @Html.TextBoxFor(m => m.USER_NAME, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.USER_NAME)
     </div>
 
     <div class="form-group">
-        <label> 사용자 이름</label>
-        <input type="text" class="form-control" asp-for="USER_NAME" placeholder="사용자 이름 입력" />
-        <span class="text-danger" asp-validation-for="USER_NAME"></span>
+        @Html.LabelFor(m => m.USER_ID)
+        @Html.TextBoxFor(m => m.USER_ID, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.USER_ID)
     </div>
 
     <div class="form-group">
-        <label> 사용자 분류</label>
-        <select asp-for="USER_TYPE" asp-validation-for="USER_TYPE">
-            <option value="partner">협력사</option>
-            <option value="friend" selected="selected">일반회원</option>
-        </select>
+        @Html.LabelFor(m => m.USER_PW)
+        @Html.PasswordFor(m => m.USER_PW, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.USER_PW)
     </div>
 
     <div class="form-group">
-        <button type="submit" class="btn btn-primary">회원가입 </button>
-        <a class="btn btn-warning" href="#">취소</a>
+        @Html.LabelFor(m => m.USER_TYPE)
+        @Html.DropDownListFor(m => m.USER_TYPE, new List<SelectListItem>
+    {
+    new SelectListItem { Value = "friend", Text = "일반회원" },
+    new SelectListItem { Value = "partner", Text = "협력사" }
+    }, "선택해주세요")
+        @Html.ValidationMessageFor(m => m.USER_TYPE)
     </div>
-</form>
+
+    <input type="submit" value="Register" class="btn btn-primary" />
+}
