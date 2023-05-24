@@ -5,16 +5,40 @@
       "PackagePath": "staticwebassets\\SrmBook.bundle.scp.css"
     },
     {
+      "Id": "C:\\vscode workspace\\SrmBook\\wwwroot\\css\\demo.css",
+      "PackagePath": "staticwebassets\\css\\demo.css"
+    },
+    {
+      "Id": "C:\\vscode workspace\\SrmBook\\wwwroot\\css\\demo.min.css",
+      "PackagePath": "staticwebassets\\css\\demo.min.css"
+    },
+    {
       "Id": "C:\\vscode workspace\\SrmBook\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "C:\\vscode workspace\\SrmBook\\wwwroot\\css\\spur.css",
+      "PackagePath": "staticwebassets\\css\\spur.css"
+    },
+    {
+      "Id": "C:\\vscode workspace\\SrmBook\\wwwroot\\css\\spur.min.css",
+      "PackagePath": "staticwebassets\\css\\spur.min.css"
     },
     {
       "Id": "C:\\vscode workspace\\SrmBook\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\vscode workspace\\SrmBook\\wwwroot\\js\\chart-js-config.js",
+      "PackagePath": "staticwebassets\\js\\chart-js-config.js"
+    },
+    {
       "Id": "C:\\vscode workspace\\SrmBook\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "C:\\vscode workspace\\SrmBook\\wwwroot\\js\\spur.js",
+      "PackagePath": "staticwebassets\\js\\spur.js"
     },
     {
       "Id": "C:\\vscode workspace\\SrmBook\\wwwroot\\lib\\bootstrap\\LICENSE",

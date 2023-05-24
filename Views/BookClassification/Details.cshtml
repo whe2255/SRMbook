@@ -2,8 +2,7 @@
 
 @{
     ViewData["Title"] = "Details";
-
-    var Key = Context.Session.GetString("USER_LOGIN_KEY");
+    var Key = Context.Session.GetString("USER_TYPE_KEY");
 }
 
 <h1>Details</h1>
@@ -46,10 +45,8 @@
 </div>
 <div>
     @if (Key == "admin")
-
     {
         <a asp-action="Edit" asp-route-id="@Model?.BOOK_NUM">Edit</a>
     }
-
     <a asp-action="Index">Back to List</a>
 </div>

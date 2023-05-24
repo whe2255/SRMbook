@@ -1,11 +1,10 @@
+using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SrmBook.Data;
 using SrmBook.Models;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
+
 
 namespace SrmBook.Controllers
 {
@@ -69,8 +68,8 @@ namespace SrmBook.Controllers
                 return View();
             }
 
-            HttpContext.Session.SetString("USER_LOGIN_KEY", user.USER_TYPE); // 권한 세션
-            HttpContext.Session.SetString("USER_SESSION_KEY", user.USER_ID); // 구별용 세션
+            HttpContext.Session.SetString("USER_TYPE_KEY", user.USER_TYPE); // 권한 세션
+            HttpContext.Session.SetString("USER_SESSION_KEY", user.USER_ID); // 세션
 
             return RedirectToAction("Index", "Home");
         }

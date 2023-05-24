@@ -7,9 +7,11 @@
 <table class="table">
     <thead>
         <tr>
-            <th>USER_NAME</th>
             <th>USER_ID</th>
+            <th>USER_NAME</th>
             <th>USER_TYPE</th>
+            <th>EMAIL</th>
+            <th>PUBLISHER</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -19,9 +21,11 @@
             if (Key == user.USER_ID)//로그인한 본인만 정보가 보이고 수정 삭제가 가능
             {
                 <tr>
-                    <td>@user.USER_NAME</td>
                     <td>@user.USER_ID</td>
+                    <td>@user.USER_NAME</td>
                     <td>@user.USER_TYPE</td>
+                    <td>@user.USER_EMAIL</td>
+                    <td>@user.PUBLISHER</td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { userNum = user.USER_NUM }, new { @class = "btn btn-primary" })
                         @using (Html.BeginForm("Delete", "BookUser", FormMethod.Get))

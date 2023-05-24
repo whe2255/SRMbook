@@ -19,5 +19,11 @@ public class BookUser
 
     [Required(ErrorMessage = "사용자 분류를 선택하세요.")]
     public string USER_TYPE { get; set; }
-    
+
+    [Required(ErrorMessage = "EMAIL을 입력하세요")]
+    [EmailAddress]
+    public string USER_EMAIL { get; set; }
+
+    [Required(ErrorMessage = "출판사명을 입력하세요")]
+    public string PUBLISHER { get; set; }
 }

@@ -3,16 +3,12 @@
 
 @{
     ViewData["Title"] = "Index";
-
-    var Key = Context.Session.GetString("USER_LOGIN_KEY");
+    var Key = Context.Session.GetString("USER_TYPE_KEY");
 }
 
 <h1>Index</h1>
 
 @if (Key == "admin")
-
-
-
 {
     <p>
         <a asp-action="Create">Create New</a>

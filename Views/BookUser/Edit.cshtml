@@ -9,12 +9,6 @@
     @Html.HiddenFor(m => m.USER_NUM)
 
     <div class="form-group">
-        @Html.LabelFor(m => m.USER_NAME)
-        @Html.TextBoxFor(m => m.USER_NAME, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.USER_NAME)
-    </div>
-
-    <div class="form-group">
         @Html.LabelFor(m => m.USER_ID)
         @Html.TextBoxFor(m => m.USER_ID, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.USER_ID)
@@ -24,6 +18,24 @@
         @Html.LabelFor(m => m.USER_PW)
         @Html.PasswordFor(m => m.USER_PW, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.USER_PW)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.USER_NAME)
+        @Html.TextBoxFor(m => m.USER_NAME, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.USER_NAME)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.USER_EMAIL)
+        @Html.TextBoxFor(m => m.USER_EMAIL, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.USER_EMAIL)
+    </div>
+
+     <div class="form-group">
+        @Html.LabelFor(m => m.PUBLISHER)
+        @Html.TextBoxFor(m => m.PUBLISHER, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.PUBLISHER)
     </div>
 
     <div class="form-group">

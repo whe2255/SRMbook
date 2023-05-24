@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -25,7 +25,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         @{
-                            var Key = Context.Session.GetString("USER_LOGIN_KEY");
+                            var Key = Context.Session.GetString("USER_SESSION_KEY");
                         }
                         @if (Key == null)
                         {
