@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SrmBook.Models;
 //장르별 검색용 뷰
-public class BookClassificationView
+public class BookSearchView
 {
     public List<BookClassification> BookClassification { get; set; }
     public List<BookInventory> BookInventory { get; set; }

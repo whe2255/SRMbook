@@ -32,7 +32,7 @@ namespace SrmBook.Controllers
 
             var BookInventory = from m in _context.BookInventory
                                 select m;
-                                
+
             if (!String.IsNullOrEmpty(searchString))
             {
                 BookInventory = BookInventory.Where(s => s.BOOK_NAME!.Contains(searchString));
@@ -42,13 +42,13 @@ namespace SrmBook.Controllers
             {
                 BookInventory = BookInventory.Where(x => x.BOOK_CLASS == BookGenre);
             }
-            var bookClassificationView = new BookClassificationView
+            var BookSearchView = new BookSearchView
             {
                 Genre = new SelectList(await genreQuery.Distinct().ToListAsync()),
                 BookInventory = await BookInventory.ToListAsync()
             };
 
-            return View(bookClassificationView);
+            return View(BookSearchView);
         }
 
         public async Task<IActionResult> Details(int? id)

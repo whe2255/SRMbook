@@ -1,14 +1,16 @@
-@model SrmBook.Models.BookClassificationView
+@model SrmBook.Models.BookSearchView
 
 
 @{
     ViewData["Title"] = "Index";
+
     var Key = Context.Session.GetString("USER_TYPE_KEY");
 }
 
 <h1>Index</h1>
 
 @if (Key == "admin")
+
 {
     <p>
         <a asp-action="Create">Create New</a>
@@ -27,6 +29,9 @@
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BookClassification![0].BOOK_IMAGE)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.BookClassification![0].BOOK_CLASS)
             </th>
@@ -47,8 +52,20 @@
     </thead>
     <tbody>
         @foreach (var item in Model.BookClassification!)
+
         {
             <tr>
+                <td>
+                    @if (item.BOOK_IMAGE != null)
+                    {
+                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.BOOK_IMAGE)" alt="Book Image"
+                        style="max-width: 100px; max-height: 100px;" />
+                    }
+                    else
+                    {
+                    <span>No image available</span>
+                    }
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.BOOK_CLASS)
                 </td>

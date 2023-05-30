@@ -39,13 +39,13 @@ namespace SrmBook.Controllers
                 BookClassification = BookClassification.Where(x => x.BOOK_CLASS == BookGenre);
             }
 
-            var bookClassificationView = new BookClassificationView
+            var BookSearchView = new BookSearchView
             {
                 Genre = new SelectList(await genreQuery.Distinct().ToListAsync()),
                 BookClassification = await BookClassification.ToListAsync()
             };
 
-            return View(bookClassificationView);
+            return View(BookSearchView);
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -71,13 +71,21 @@ namespace SrmBook.Controllers
             return View();
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BOOK_NUM,BOOK_CLASS,BOOK_NAME,BOOK_WRITER,PUBLISHER,BOOK_PRICE")] BookClassification bookClassification)
+        public async Task<IActionResult> Create([Bind("BOOK_NUM,BOOK_CLASS,BOOK_NAME,BOOK_WRITER,PUBLISHER,BOOK_PRICE,BOOK_IMAGE")] BookClassification bookClassification, IFormFile imageFile)
         {
             if (ModelState.IsValid)
             {
+                // 이미지 파일을 바이너리로 변환하여 BOOK_IMAGE에 할당
+                if (imageFile != null && imageFile.Length > 0)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await imageFile.CopyToAsync(memoryStream);
+                        bookClassification.BOOK_IMAGE = memoryStream.ToArray();
+                    }
+                }
                 _context.Add(bookClassification);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
