@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -6,43 +10,42 @@ using SrmBook.Models;
 
 namespace SrmBook.Controllers
 {
-    public class BookClassificationController : Controller
+    public class BookInventoryController : Controller
     {
-        private readonly BookClassificationContext _context;
+        private readonly BookInventoryContext _context;
 
-        public BookClassificationController(BookClassificationContext context)
+        public BookInventoryController(BookInventoryContext context)
         {
             _context = context;
         }
 
         public async Task<IActionResult> Index(string searchString, string BookGenre)
         {
-            if (_context.BookClassification == null)
+            if (_context.BookInventory == null)
             {
-                return Problem("Entity set 'BookClassification'  is null.");
+                return Problem("Entity set 'BookInventory'  is null.");
             }
             //장르별 검색, 검색
-            IQueryable<string> genreQuery = from m in _context.BookClassification
+            IQueryable<string> genreQuery = from m in _context.BookInventory
                                             orderby m.BOOK_CLASS
                                             select m.BOOK_CLASS;
 
-            var BookClassification = from m in _context.BookClassification
-                                     select m;
-
+            var BookInventory = from m in _context.BookInventory
+                                select m;
+                                
             if (!String.IsNullOrEmpty(searchString))
             {
-                BookClassification = BookClassification.Where(s => s.BOOK_NAME!.Contains(searchString));
+                BookInventory = BookInventory.Where(s => s.BOOK_NAME!.Contains(searchString));
             }
 
             if (!string.IsNullOrEmpty(BookGenre))
             {
-                BookClassification = BookClassification.Where(x => x.BOOK_CLASS == BookGenre);
+                BookInventory = BookInventory.Where(x => x.BOOK_CLASS == BookGenre);
             }
-
             var bookClassificationView = new BookClassificationView
             {
                 Genre = new SelectList(await genreQuery.Distinct().ToListAsync()),
-                BookClassification = await BookClassification.ToListAsync()
+                BookInventory = await BookInventory.ToListAsync()
             };
 
             return View(bookClassificationView);
@@ -50,63 +53,59 @@ namespace SrmBook.Controllers
 
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.BookClassification == null)
+            if (id == null || _context.BookInventory == null)
             {
                 return NotFound();
             }
 
-            var bookClassification = await _context.BookClassification
+            var bookInventory = await _context.BookInventory
                 .FirstOrDefaultAsync(m => m.BOOK_NUM == id);
-            if (bookClassification == null)
+            if (bookInventory == null)
             {
                 return NotFound();
             }
 
-            return View(bookClassification);
+            return View(bookInventory);
         }
-
 
         public IActionResult Create()
         {
             return View();
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BOOK_NUM,BOOK_CLASS,BOOK_NAME,BOOK_WRITER,PUBLISHER,BOOK_PRICE")] BookClassification bookClassification)
+        public async Task<IActionResult> Create([Bind("BOOK_NUM,BOOK_CLASS,BOOK_NAME,BOOK_WRITER,PUBLISHER,BOOK_PRICE,BOOK_QUANTITY")] BookInventory bookInventory)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(bookClassification);
+                _context.Add(bookInventory);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(bookClassification);
+            return View(bookInventory);
         }
-
 
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.BookClassification == null)
+            if (id == null || _context.BookInventory == null)
             {
                 return NotFound();
             }
 
-            var bookClassification = await _context.BookClassification.FindAsync(id);
-            if (bookClassification == null)
+            var bookInventory = await _context.BookInventory.FindAsync(id);
+            if (bookInventory == null)
             {
                 return NotFound();
             }
-            return View(bookClassification);
+            return View(bookInventory);
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BOOK_NUM,BOOK_CLASS,BOOK_NAME,BOOK_WRITER,PUBLISHER,BOOK_PRICE")] BookClassification bookClassification)
+        public async Task<IActionResult> Edit(int id, [Bind("BOOK_NUM,BOOK_CLASS,BOOK_NAME,BOOK_WRITER,PUBLISHER,BOOK_PRICE,BOOK_QUANTITY")] BookInventory bookInventory)
         {
-            if (id != bookClassification.BOOK_NUM)
+            if (id != bookInventory.BOOK_NUM)
             {
                 return NotFound();
             }
@@ -115,12 +114,12 @@ namespace SrmBook.Controllers
             {
                 try
                 {
-                    _context.Update(bookClassification);
+                    _context.Update(bookInventory);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BookClassificationExists(bookClassification.BOOK_NUM))
+                    if (!BookInventoryExists(bookInventory.BOOK_NUM))
                     {
                         return NotFound();
                     }
@@ -131,49 +130,47 @@ namespace SrmBook.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(bookClassification);
+            return View(bookInventory);
         }
-
 
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.BookClassification == null)
+            if (id == null || _context.BookInventory == null)
             {
                 return NotFound();
             }
 
-            var bookClassification = await _context.BookClassification
+            var bookInventory = await _context.BookInventory
                 .FirstOrDefaultAsync(m => m.BOOK_NUM == id);
-            if (bookClassification == null)
+            if (bookInventory == null)
             {
                 return NotFound();
             }
 
-            return View(bookClassification);
+            return View(bookInventory);
         }
-
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.BookClassification == null)
+            if (_context.BookInventory == null)
             {
-                return Problem("Entity set 'BookClassificationContext.BookClassification' is null.");
+                return Problem("Entity set 'BookInventoryContext.BookInventory'  is null.");
             }
-            var bookClassification = await _context.BookClassification.FindAsync(id);
-            if (bookClassification != null)
+            var bookInventory = await _context.BookInventory.FindAsync(id);
+            if (bookInventory != null)
             {
-                _context.BookClassification.Remove(bookClassification);
+                _context.BookInventory.Remove(bookInventory);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BookClassificationExists(int id)
+        private bool BookInventoryExists(int id)
         {
-            return _context.BookClassification.Any(e => e.BOOK_NUM == id);
+            return _context.BookInventory.Any(e => e.BOOK_NUM == id);
         }
     }
 }

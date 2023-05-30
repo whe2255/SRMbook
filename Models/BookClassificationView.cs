@@ -6,6 +6,7 @@ namespace SrmBook.Models;
 public class BookClassificationView
 {
     public List<BookClassification> BookClassification { get; set; }
+    public List<BookInventory> BookInventory { get; set; }
     public SelectList Genre { get; set; }
     public string BookGenre { get; set; }
     public string SearchString { get; set; }

@@ -1,10 +1,13 @@
 
 using Microsoft.EntityFrameworkCore;
 using SrmBook.Data;
+using Microsoft.Extensions.DependencyInjection;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContext<BookInventoryContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BookInventoryContext") ?? throw new InvalidOperationException("Connection string 'BookInventoryContext' not found.")));
 builder.Services.AddDbContext<PartnerManagementContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("PartnerManagementContext") ?? throw new InvalidOperationException("Connection string 'PartnerManagementContext' not found.")));
 builder.Services.AddDbContext<BookClassificationContext>(options =>
@@ -16,17 +19,17 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(10);//Session Timeout.
+    options.IdleTimeout = TimeSpan.FromMinutes(10);//세션 시간
 });
 
 var app = builder.Build();
 
 
-// Configure the HTTP request pipeline.
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+   
     app.UseHsts();
 }
 

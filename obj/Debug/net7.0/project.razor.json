@@ -18645,6 +18645,11 @@
   "RootNamespace": "SrmBook",
   "Documents": [
     {
+      "FilePath": "c:\\vscode workspace\\SrmBook\\Views\\BookInventory\\Edit.cshtml",
+      "TargetPath": "Views\\BookInventory\\Edit.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\vscode workspace\\SrmBook\\Views\\BookClassification\\Edit.cshtml",
       "TargetPath": "Views\\BookClassification\\Edit.cshtml",
       "FileKind": "mvc"
@@ -18660,8 +18665,18 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\vscode workspace\\SrmBook\\Views\\BookInventory\\Delete.cshtml",
+      "TargetPath": "Views\\BookInventory\\Delete.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\vscode workspace\\SrmBook\\Views\\BookUser\\Index.cshtml",
       "TargetPath": "Views\\BookUser\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\vscode workspace\\SrmBook\\Views\\BookInventory\\Create.cshtml",
+      "TargetPath": "Views\\BookInventory\\Create.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -18690,6 +18705,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\vscode workspace\\SrmBook\\Views\\BookInventory\\Index.cshtml",
+      "TargetPath": "Views\\BookInventory\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\vscode workspace\\SrmBook\\Views\\PartnerManagement\\Create.cshtml",
       "TargetPath": "Views\\PartnerManagement\\Create.cshtml",
       "FileKind": "mvc"
@@ -18707,6 +18727,11 @@
     {
       "FilePath": "c:\\vscode workspace\\SrmBook\\Views\\Shared\\Error.cshtml",
       "TargetPath": "Views\\Shared\\Error.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\vscode workspace\\SrmBook\\Views\\BookInventory\\Details.cshtml",
+      "TargetPath": "Views\\BookInventory\\Details.cshtml",
       "FileKind": "mvc"
     },
     {

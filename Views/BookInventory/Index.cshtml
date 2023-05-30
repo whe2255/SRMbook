@@ -1,0 +1,81 @@
+@model SrmBook.Models.BookClassificationView
+
+@{
+    ViewData["Title"] = "Index";
+    var Key = Context.Session.GetString("USER_TYPE_KEY");
+}
+
+<h1>Index</h1>
+@if (Key == "admin")
+{
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+}
+@* 검색 *@
+<form asp-controller="BookInventory" asp-action="Index" method="get">
+    <p>
+        <select asp-for="BookGenre" asp-items="Model.Genre">
+            <option value="">All</option>
+        </select>
+        Title: <input type="text" name="searchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BookInventory![0].BOOK_CLASS)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookInventory![0].BOOK_NAME)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookInventory![0].BOOK_WRITER)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookInventory![0].PUBLISHER)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookInventory![0].BOOK_PRICE)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BookInventory![0].BOOK_QUANTITY)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.BookInventory!) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BOOK_CLASS)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BOOK_NAME)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BOOK_WRITER)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PUBLISHER)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BOOK_PRICE)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BOOK_QUANTITY)
+            </td>
+            <td>
+                  @if (Key == "admin")
+                    {
+                <a asp-action="Edit" asp-route-id="@item.BOOK_NUM">Edit</a> 
+                <a asp-action="Delete" asp-route-id="@item.BOOK_NUM">Delete</a>
+                    }
+                <a asp-action="Details" asp-route-id="@item.BOOK_NUM">Details</a> 
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
