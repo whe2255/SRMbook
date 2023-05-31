@@ -18645,6 +18645,11 @@
   "RootNamespace": "SrmBook",
   "Documents": [
     {
+      "FilePath": "c:\\vscode workspace\\SrmBook\\Views\\BookOrder\\Order.cshtml",
+      "TargetPath": "Views\\BookOrder\\Order.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\vscode workspace\\SrmBook\\Views\\BookClassification\\Create.cshtml",
       "TargetPath": "Views\\BookClassification\\Create.cshtml",
       "FileKind": "mvc"
@@ -18652,6 +18657,11 @@
     {
       "FilePath": "c:\\vscode workspace\\SrmBook\\Views\\Home\\Index.cshtml",
       "TargetPath": "Views\\Home\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\vscode workspace\\SrmBook\\Views\\BookOrder\\Index.cshtml",
+      "TargetPath": "Views\\BookOrder\\Index.cshtml",
       "FileKind": "mvc"
     },
     {

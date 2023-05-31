@@ -75,7 +75,7 @@ namespace SrmBook.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BOOK_NUM,BOOK_CLASS,BOOK_NAME,BOOK_WRITER,PUBLISHER,BOOK_PRICE,BOOK_QUANTITY")] BookInventory bookInventory)
+        public async Task<IActionResult> Create([Bind("BOOK_NUM,BOOK_CLASS,BOOK_NAME,BOOK_WRITER,BOOK_PRICE,BOOK_QUANTITY")] BookInventory bookInventory)
         {
             if (ModelState.IsValid)
             {
@@ -103,7 +103,7 @@ namespace SrmBook.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BOOK_NUM,BOOK_CLASS,BOOK_NAME,BOOK_WRITER,PUBLISHER,BOOK_PRICE,BOOK_QUANTITY")] BookInventory bookInventory)
+        public async Task<IActionResult> Edit(int id, [Bind("BOOK_NUM,BOOK_CLASS,BOOK_NAME,BOOK_WRITER,BOOK_PRICE,BOOK_QUANTITY")] BookInventory bookInventory)
         {
             if (id != bookInventory.BOOK_NUM)
             {
@@ -167,10 +167,11 @@ namespace SrmBook.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
         private bool BookInventoryExists(int id)
         {
             return _context.BookInventory.Any(e => e.BOOK_NUM == id);
         }
+
     }
+
 }

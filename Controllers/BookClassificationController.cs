@@ -73,7 +73,7 @@ namespace SrmBook.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BOOK_NUM,BOOK_CLASS,BOOK_NAME,BOOK_WRITER,PUBLISHER,BOOK_PRICE,BOOK_IMAGE")] BookClassification bookClassification, IFormFile imageFile)
+        public async Task<IActionResult> Create([Bind("BOOK_NUM,BOOK_CLASS,BOOK_NAME,BOOK_WRITER,BOOK_PRICE,BOOK_IMAGE")] BookClassification bookClassification, IFormFile imageFile)
         {
             if (ModelState.IsValid)
             {
@@ -112,7 +112,7 @@ namespace SrmBook.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BOOK_NUM,BOOK_CLASS,BOOK_NAME,BOOK_WRITER,PUBLISHER,BOOK_PRICE")] BookClassification bookClassification)
+        public async Task<IActionResult> Edit(int id, [Bind("BOOK_NUM,BOOK_CLASS,BOOK_NAME,BOOK_WRITER,BOOK_PRICE")] BookClassification bookClassification)
         {
             if (id != bookClassification.BOOK_NUM)
             {
