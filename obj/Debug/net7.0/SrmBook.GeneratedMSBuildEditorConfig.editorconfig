@@ -9,113 +9,93 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = SrmBook
 build_property.RootNamespace = SrmBook
-build_property.ProjectDir = c:\vscode workspace\SrmBook\
+build_property.ProjectDir = C:\vscode workspace\SrmBook\
 build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = c:\vscode workspace\SrmBook
+build_property.MSBuildProjectDirectory = C:\vscode workspace\SrmBook
 build_property._RazorSourceGeneratorDebug = 
 
-[c:/vscode workspace/SrmBook/Views/BookClassification/Create.cshtml]
+[C:/vscode workspace/SrmBook/Views/BookClassification/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va0NsYXNzaWZpY2F0aW9uXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/vscode workspace/SrmBook/Views/BookClassification/Delete.cshtml]
+[C:/vscode workspace/SrmBook/Views/BookClassification/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va0NsYXNzaWZpY2F0aW9uXERlbGV0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/vscode workspace/SrmBook/Views/BookClassification/Details.cshtml]
+[C:/vscode workspace/SrmBook/Views/BookClassification/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va0NsYXNzaWZpY2F0aW9uXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/vscode workspace/SrmBook/Views/BookClassification/Edit.cshtml]
+[C:/vscode workspace/SrmBook/Views/BookClassification/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va0NsYXNzaWZpY2F0aW9uXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/vscode workspace/SrmBook/Views/BookClassification/Index.cshtml]
+[C:/vscode workspace/SrmBook/Views/BookClassification/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va0NsYXNzaWZpY2F0aW9uXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/vscode workspace/SrmBook/Views/BookInventory/Create.cshtml]
+[C:/vscode workspace/SrmBook/Views/BookInventory/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va0ludmVudG9yeVxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/vscode workspace/SrmBook/Views/BookInventory/Delete.cshtml]
+[C:/vscode workspace/SrmBook/Views/BookInventory/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va0ludmVudG9yeVxEZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/vscode workspace/SrmBook/Views/BookInventory/Details.cshtml]
+[C:/vscode workspace/SrmBook/Views/BookInventory/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va0ludmVudG9yeVxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/vscode workspace/SrmBook/Views/BookInventory/Edit.cshtml]
+[C:/vscode workspace/SrmBook/Views/BookInventory/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va0ludmVudG9yeVxFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/vscode workspace/SrmBook/Views/BookInventory/Index.cshtml]
+[C:/vscode workspace/SrmBook/Views/BookInventory/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va0ludmVudG9yeVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/vscode workspace/SrmBook/Views/BookUser/Delete.cshtml]
+[C:/vscode workspace/SrmBook/Views/BookUser/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va1VzZXJcRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/vscode workspace/SrmBook/Views/BookUser/Edit.cshtml]
+[C:/vscode workspace/SrmBook/Views/BookUser/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va1VzZXJcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/vscode workspace/SrmBook/Views/BookUser/Index.cshtml]
+[C:/vscode workspace/SrmBook/Views/BookUser/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va1VzZXJcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/vscode workspace/SrmBook/Views/BookUser/Login.cshtml]
+[C:/vscode workspace/SrmBook/Views/BookUser/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va1VzZXJcTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/vscode workspace/SrmBook/Views/BookUser/Register.cshtml]
+[C:/vscode workspace/SrmBook/Views/BookUser/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va1VzZXJcUmVnaXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/vscode workspace/SrmBook/Views/Home/Index.cshtml]
+[C:/vscode workspace/SrmBook/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/vscode workspace/SrmBook/Views/PartnerManagement/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFydG5lck1hbmFnZW1lbnRcQ3JlYXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[c:/vscode workspace/SrmBook/Views/PartnerManagement/Delete.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFydG5lck1hbmFnZW1lbnRcRGVsZXRlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[c:/vscode workspace/SrmBook/Views/PartnerManagement/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFydG5lck1hbmFnZW1lbnRcRGV0YWlscy5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[c:/vscode workspace/SrmBook/Views/PartnerManagement/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFydG5lck1hbmFnZW1lbnRcRWRpdC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[c:/vscode workspace/SrmBook/Views/PartnerManagement/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUGFydG5lck1hbmFnZW1lbnRcSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[c:/vscode workspace/SrmBook/Views/Shared/Error.cshtml]
+[C:/vscode workspace/SrmBook/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/vscode workspace/SrmBook/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/vscode workspace/SrmBook/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/vscode workspace/SrmBook/Views/_ViewImports.cshtml]
+[C:/vscode workspace/SrmBook/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/vscode workspace/SrmBook/Views/_ViewStart.cshtml]
+[C:/vscode workspace/SrmBook/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[c:/vscode workspace/SrmBook/Views/Shared/_Layout.cshtml]
+[C:/vscode workspace/SrmBook/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-os9zuu34ja
