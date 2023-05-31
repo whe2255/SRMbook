@@ -5,12 +5,23 @@
     var Key = Context.Session.GetString("USER_TYPE_KEY");
 }
 
-<h1>Details</h1>
+<h1>세부 정보</h1>
 
 <div>
-    <h4>BookClassification</h4>
+    <h4>도서 분류</h4>
     <hr />
     <dl class="row">
+         <dd>
+                    @if (Model.BOOK_IMAGE != null)
+                    {
+                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.BOOK_IMAGE)" alt="Book Image"
+                        style="max-width: 100px; max-height: 100px;" />
+                    }
+                    else
+                    {
+                    <span>이미지가 없습니다</span>
+                    }
+        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.BOOK_CLASS)
         </dt>
@@ -46,7 +57,7 @@
 <div>
     @if (Key == "admin")
     {
-        <a asp-action="Edit" asp-route-id="@Model?.BOOK_NUM">Edit</a>
+        <a asp-action="Edit" asp-route-id="@Model?.BOOK_NUM">수정</a>
     }
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">목록으로 돌아가기</a>
 </div>

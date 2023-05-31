@@ -4,11 +4,11 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<h1>도서 삭제</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>정말 삭제하시겠습니까?</h3>
 <div>
-    <h4>BookClassification</h4>
+    <h4>도서 분류</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -46,6 +46,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="BOOK_NUM" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index">목록으로 돌아가기</a>
     </form>
 </div>

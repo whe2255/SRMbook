@@ -7,13 +7,13 @@
     var Key = Context.Session.GetString("USER_TYPE_KEY");
 }
 
-<h1>Index</h1>
+<h1>도서 분류</h1>
 
 @if (Key == "admin")
 
 {
     <p>
-        <a asp-action="Create">Create New</a>
+        <a asp-action="Create">도서 등록</a>
     </p>
 }
 @* 검색 *@
@@ -63,7 +63,7 @@
                     }
                     else
                     {
-                    <span>No image available</span>
+                    <span>이미지가 없습니다</span>
                     }
                 </td>
                 <td>
@@ -84,10 +84,10 @@
                 <td>
                     @if (Key == "admin")
                     {
-                        <a asp-action="Edit" asp-route-id="@item.BOOK_NUM">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@item.BOOK_NUM">Delete</a>
+                        <a asp-action="Edit" asp-route-id="@item.BOOK_NUM">수정</a>
+                        <a asp-action="Delete" asp-route-id="@item.BOOK_NUM">삭제</a>
                     }
-                    <a asp-action="Details" asp-route-id="@item.BOOK_NUM">Details</a>
+                    <a asp-action="Details" asp-route-id="@item.BOOK_NUM">세부정보</a>
                 </td>
             </tr>
         }
