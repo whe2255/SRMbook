@@ -8,8 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<BookInventoryContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BookInventoryContext") ?? throw new InvalidOperationException("Connection string 'BookInventoryContext' not found.")));
-builder.Services.AddDbContext<PartnerManagementContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("PartnerManagementContext") ?? throw new InvalidOperationException("Connection string 'PartnerManagementContext' not found.")));
 builder.Services.AddDbContext<BookClassificationContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BookClassificationContext") ?? throw new InvalidOperationException("Connection string 'BookClassificationContext' not found.")));
 builder.Services.AddDbContext<BookUserContext>(options =>
