@@ -171,7 +171,5 @@ namespace SrmBook.Controllers
         {
             return _context.BookInventory.Any(e => e.BOOK_NUM == id);
         }
-
     }
-
 }
