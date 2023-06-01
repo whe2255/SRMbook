@@ -1,0 +1,52 @@
+@model SrmBook.Models.BookOrder
+
+
+<h2>주문 생성</h2>
+
+@using (Html.BeginForm("Create", "BookOrder", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.BOOK_NUM, "도서 번호")
+        @Html.TextBoxFor(model => model.BOOK_NUM, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.BOOK_NUM)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.BOOK_NAME, "도서 제목")
+        @Html.TextBoxFor(model => model.BOOK_NAME, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.BOOK_NAME)
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.USER_ID, "사용자 ID")
+        @Html.TextBoxFor(model => model.USER_ID, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.USER_ID)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ORDER_DATE, "주문 날짜")
+        @Html.EditorFor(model => model.ORDER_DATE, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ORDER_DATE)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.BOOK_QUANTITY, "도서 수량")
+        @Html.TextBoxFor(model => model.BOOK_QUANTITY, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.BOOK_QUANTITY)
+    </div>
+
+    <div class="form-group">
+        @Html.DisplayFor(model => model.TOTAL_PRICE, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.TOTAL_PRICE)
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="주문 생성" class="btn btn-primary" />
+    </div>
+}
+
+
+

@@ -56,6 +56,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va0ludmVudG9yeVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/vscode workspace/SrmBook/Views/BookOrder/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va09yZGVyXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/vscode workspace/SrmBook/Views/BookOrder/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va09yZGVyXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/vscode workspace/SrmBook/Views/BookOrder/List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va09yZGVyXExpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/vscode workspace/SrmBook/Views/BookUser/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9va1VzZXJcRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

@@ -12,6 +12,8 @@ builder.Services.AddDbContext<BookClassificationContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BookClassificationContext") ?? throw new InvalidOperationException("Connection string 'BookClassificationContext' not found.")));
 builder.Services.AddDbContext<BookUserContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BookUserContext") ?? throw new InvalidOperationException("Connection string 'BookUserContext' not found.")));
+builder.Services.AddDbContext<BookOrderContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("BookOrderContext") ?? throw new InvalidOperationException("Connection string 'BookOrderContext' not found.")));
 builder.Services.AddControllersWithViews();
 
 
@@ -27,7 +29,7 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-   
+
     app.UseHsts();
 }
 

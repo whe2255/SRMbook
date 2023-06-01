@@ -5,18 +5,19 @@ namespace SrmBook.Models;
 
 public class BookUser
 {
-    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int USER_NUM { get; set; }
 
     [Required(ErrorMessage = "사용자 이름을 입력하세요."), StringLength(5)]
     public string USER_NAME { get; set; }
 
+    [Key]
     [Required(ErrorMessage = "사용자 아이디를 입력하세요."), StringLength(15)]
     public string USER_ID { get; set; }
 
     [Required(ErrorMessage = "사용자 비밀번호를 입력하세요.")] //정규표현식 사용
     [RegularExpression("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?':{}|<>])[A-Za-z0-9!@#$%^&*(),.?':{}|<>]+$"
-    , ErrorMessage ="영어와 숫자, 특수문자를 사용해 주세요"), StringLength(15)]
+    , ErrorMessage = "영어와 숫자, 특수문자를 사용해 주세요"), StringLength(15)]
     public string USER_PW { get; set; }
 
     [Required(ErrorMessage = "사용자 분류를 선택하세요.")]
