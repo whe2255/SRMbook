@@ -5,13 +5,13 @@ namespace SrmBook.Models;
 
 public class BookUser
 {
+    [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int USER_NUM { get; set; }
 
     [Required(ErrorMessage = "사용자 이름을 입력하세요."), StringLength(5)]
     public string USER_NAME { get; set; }
 
-    [Key]
     [Required(ErrorMessage = "사용자 아이디를 입력하세요."), StringLength(15)]
     public string USER_ID { get; set; }
 

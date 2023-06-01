@@ -3,14 +3,12 @@
 
 @{
     ViewData["Title"] = "Index";
-
     var Key = Context.Session.GetString("USER_TYPE_KEY");
 }
 
 <h1>도서 분류</h1>
 
 @if (Key == "admin")
-
 {
     <p>
         <a asp-action="Create">도서 등록</a>

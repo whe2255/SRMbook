@@ -1,21 +1,21 @@
 @model SrmBook.Models.BookOrder
 
 @{
-    ViewData["Title"] = "Create";
-    var Key = Context.Session.GetString("USER_SESSION_KEY");
+    ViewData["Title"] = "Edit";
 }
 
-<h1>Create</h1>
+<h1>Edit</h1>
 
 <h4>BookOrder</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ORDER_NUM" />
             <div class="form-group">
                 <label asp-for="USER_ID" class="control-label"></label>
-                <input asp-for="USER_ID" class="form-control" value="@Key" readonly />
+                <input asp-for="USER_ID" class="form-control" />
                 <span asp-validation-for="USER_ID" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -39,7 +39,7 @@
                 <span asp-validation-for="BOOK_NUM" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>

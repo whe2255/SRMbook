@@ -1,7 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using SrmBook.Data;
 using SrmBook.Models;
-using System.Linq;
 
 namespace SrmBook.Controllers
 {
@@ -14,102 +19,150 @@ namespace SrmBook.Controllers
             _context = context;
         }
 
-        // 주문 생성 페이지
+
+        public async Task<IActionResult> Index()
+        {
+            return View(await _context.BookOrder.ToListAsync());
+        }
+
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null || _context.BookOrder == null)
+            {
+                return NotFound();
+            }
+
+            var bookOrder = await _context.BookOrder
+                .FirstOrDefaultAsync(m => m.ORDER_NUM == id);
+            if (bookOrder == null)
+            {
+                return NotFound();
+            }
+
+            return View(bookOrder);
+        }
+
+
         public IActionResult Create()
         {
-            // 주문 생성 페이지 뷰 반환
             return View();
         }
 
-        // 주문 생성 처리
+
         [HttpPost]
-        public IActionResult Create(BookOrder order)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("ORDER_NUM,USER_ID,ORDER_DATE,BOOK_QUANTITY,TOTAL_PRICE,BOOK_NAME,BOOK_NUM")] BookOrder bookOrder)
         {
             if (ModelState.IsValid)
             {
-                // 주문 정보 저장
-                _context.BookOrder.Add(order);
+                _context.Add(bookOrder);
 
                 // 재고 수량 차감
-                var bookInventory = _context.BookInventory.Find(order.BOOK_NUM);
+                var bookInventory = _context.BookInventory.Find(bookOrder.BOOK_NUM);
                 if (bookInventory != null)
                 {
-                    bookInventory.BOOK_QUANTITY -= order.BOOK_QUANTITY;
+                    bookInventory.BOOK_QUANTITY -= bookOrder.BOOK_QUANTITY;
                     _context.BookInventory.Update(bookInventory);
                 }
 
                 // 가격 계산
-                order.TOTAL_PRICE = CalculateTotalPrice(bookInventory.BOOK_PRICE, order.BOOK_QUANTITY);
-
-                // 주문 저장
-                _context.SaveChanges();
-
-                // 주문 생성 후 성공 메시지 출력
-                TempData["SuccessMessage"] = "주문이 성공적으로 생성되었습니다.";
-
-                return RedirectToAction("List");
+                bookOrder.TOTAL_PRICE = CalculateTotalPrice(bookInventory.BOOK_PRICE, bookOrder.BOOK_QUANTITY);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-
-            // 유효성 검사 실패 시 주문 생성 페이지 뷰 반환
-            return View(order);
+            return View(bookOrder);
         }
 
-        // 주문 상세 정보 페이지
-        public IActionResult Details(int id)
-        {
-            // 주문 조회
-            BookOrder order = _context.BookOrder.Find(id);
 
-            if (order != null)
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null || _context.BookOrder == null)
             {
-                // 주문 상세 정보 뷰 반환
-                return View(order);
+                return NotFound();
             }
 
-            // 주문이 존재하지 않을 경우 에러 페이지 뷰 반환
-            return View("Error");
+            var bookOrder = await _context.BookOrder.FindAsync(id);
+            if (bookOrder == null)
+            {
+                return NotFound();
+            }
+            return View(bookOrder);
         }
 
-        // 주문 목록 페이지
-        public IActionResult List()
-        {
-            // 모든 주문 조회
-            var orders = _context.BookOrder.ToList();
 
-            // 주문 목록 뷰 반환
-            return View(orders);
-        }
-
-        // 주문 삭제 처리
         [HttpPost]
-        public IActionResult Delete(int id)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("ORDER_NUM,USER_ID,ORDER_DATE,BOOK_QUANTITY,TOTAL_PRICE,BOOK_NAME,BOOK_NUM")] BookOrder bookOrder)
         {
-            // 주문 조회
-            BookOrder order = _context.BookOrder.Find(id);
-
-            if (order != null)
+            if (id != bookOrder.ORDER_NUM)
             {
-                // 주문 삭제
-                _context.BookOrder.Remove(order);
-
-                // 재고 수량 복구
-                var bookInventory = _context.BookInventory.Find(order.BOOK_NUM);
-                if (bookInventory != null)
-                {
-                    bookInventory.BOOK_QUANTITY += order.BOOK_QUANTITY;
-                    _context.BookInventory.Update(bookInventory);
-                }
-
-                // 주문 저장
-                _context.SaveChanges();
-
-                // 주문 삭제 후 성공 메시지 출력
-                TempData["SuccessMessage"] = "주문이 성공적으로 삭제되었습니다.";
-                return RedirectToAction("List");
+                return NotFound();
             }
 
-            // 주문이 존재하지 않을 경우 에러 페이지 뷰 반환
-            return View("Error");
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(bookOrder);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!BookOrderExists(bookOrder.ORDER_NUM))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(bookOrder);
+        }
+
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null || _context.BookOrder == null)
+            {
+                return NotFound();
+            }
+
+            var bookOrder = await _context.BookOrder
+                .FirstOrDefaultAsync(m => m.ORDER_NUM == id);
+            if (bookOrder == null)
+            {
+                return NotFound();
+            }
+
+            return View(bookOrder);
+        }
+
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            if (_context.BookOrder == null)
+            {
+                return Problem("Entity set 'BookOrderContext.BookOrder'  is null.");
+            }
+            var bookOrder = await _context.BookOrder.FindAsync(id);
+            if (bookOrder != null)
+            {
+                _context.BookOrder.Remove(bookOrder);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool BookOrderExists(int id)
+        {
+            return _context.BookOrder.Any(e => e.ORDER_NUM == id);
         }
 
         // 총 가격 계산 메소드
