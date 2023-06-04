@@ -1,3 +1,36 @@
-﻿@{
+﻿@model List<PurchaseRankingViewModel>
+@{
     ViewData["Title"] = "Home Page";
 }
+
+
+<h2>Purchase Ranking</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Book Name</th>
+            <th>Total Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            @for (var i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@Model[i].BOOK_NAME</td>
+                    <td>@Model[i].TOTAL_QUANTITY</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3">No data available</td>
+            </tr>
+        }
+    </tbody>
+</table>
