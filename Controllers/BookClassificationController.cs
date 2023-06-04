@@ -77,19 +77,13 @@ namespace SrmBook.Controllers
         {
             if (ModelState.IsValid)
             {
-                // 이미지 파일을 바이너리로 변환하여 BOOK_IMAGE에 할당
-                if (imageFile != null && imageFile.Length > 0)
-                {
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        await imageFile.CopyToAsync(memoryStream);
-                        bookClassification.BOOK_IMAGE = memoryStream.ToArray();
-                    }
-                }
+                await ProcessImageFile(bookClassification, imageFile);
+
                 _context.Add(bookClassification);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(bookClassification);
         }
 
@@ -112,7 +106,7 @@ namespace SrmBook.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BOOK_NUM,BOOK_CLASS,BOOK_NAME,BOOK_WRITER,BOOK_PRICE")] BookClassification bookClassification)
+        public async Task<IActionResult> Edit(int id, [Bind("BOOK_NUM,BOOK_CLASS,BOOK_NAME,BOOK_WRITER,BOOK_PRICE")] BookClassification bookClassification, IFormFile imageFile)
         {
             if (id != bookClassification.BOOK_NUM)
             {
@@ -123,6 +117,7 @@ namespace SrmBook.Controllers
             {
                 try
                 {
+                    // await ProcessImageFile(bookClassification, imageFile);안댐
                     _context.Update(bookClassification);
                     await _context.SaveChangesAsync();
                 }
@@ -160,7 +155,6 @@ namespace SrmBook.Controllers
             return View(bookClassification);
         }
 
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -182,6 +176,18 @@ namespace SrmBook.Controllers
         private bool BookClassificationExists(int id)
         {
             return _context.BookClassification.Any(e => e.BOOK_NUM == id);
+        }
+        //image파일 바이너리로 변환
+        private async Task ProcessImageFile(BookClassification bookClassification, IFormFile imageFile)
+        {
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await imageFile.CopyToAsync(memoryStream);
+                    bookClassification.BOOK_IMAGE = memoryStream.ToArray();
+                }
+            }
         }
     }
 }

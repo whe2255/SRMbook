@@ -14,9 +14,9 @@ public class HomeController : Controller
     {
         _context = context;
     }
-    //구매 순위
     public async Task<IActionResult> Index()
     {
+    //구매 순위
         var purchaseRanking = await _context.BookOrder
             .GroupBy(p => p.BOOK_NAME)
             .Select(g => new PurchaseRankingViewModel
@@ -29,7 +29,7 @@ public class HomeController : Controller
 
         return View(purchaseRanking);
     }
-
+    
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

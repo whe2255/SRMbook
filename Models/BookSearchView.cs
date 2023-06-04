@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 
 namespace SrmBook.Models;
+
 //장르별 검색용 뷰
 public class BookSearchView
 {
