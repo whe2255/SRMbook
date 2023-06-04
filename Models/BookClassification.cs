@@ -13,4 +13,6 @@ public class BookClassification
     public string BOOK_WRITER { get; set; }
     public int BOOK_PRICE { get; set; }
     public byte[] BOOK_IMAGE { get; set; }
+
+
 }
