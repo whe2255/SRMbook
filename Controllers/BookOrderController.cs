@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,7 +19,6 @@ namespace SrmBook.Controllers
         {
             _context = context;
         }
-
 
         public async Task<IActionResult> Index()
         {
@@ -68,6 +68,7 @@ namespace SrmBook.Controllers
 
                 // 가격 계산
                 bookOrder.TOTAL_PRICE = CalculateTotalPrice(bookInventory.BOOK_PRICE, bookOrder.BOOK_QUANTITY);
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
