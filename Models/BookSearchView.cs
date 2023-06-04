@@ -10,4 +10,5 @@ public class BookSearchView
     public SelectList Genre { get; set; }
     public string BookGenre { get; set; }
     public string SearchString { get; set; }
+
 }

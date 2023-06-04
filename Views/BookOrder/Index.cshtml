@@ -12,7 +12,19 @@
     <p>
         <a asp-action="Create">Create New</a>
     </p>
+    //날짜별 검색
+    @using (Html.BeginForm("Index", "BookOrder", FormMethod.Get))
+    {
+        <p>
+            Search by Book Name: @Html.TextBox("searchString", ViewBag.CurrentFilter as string)
+            <input type="submit" value="Search" />
+        </p>
 
+        <p>
+            Search by Date: @Html.TextBox("searchDate", ViewBag.CurrentDate as string, new { @class = "datepicker" })
+            <input type="submit" value="Search" />
+        </p>
+    }
     <table class="table">
         <thead>
             <tr>
@@ -75,4 +87,14 @@
             }
         </tbody>
     </table>
+//datepicker
+    @section Scripts {
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $(".datepicker").datepicker();
+        });
+    </script>
+}
 }

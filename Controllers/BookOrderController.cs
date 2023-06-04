@@ -20,9 +20,27 @@ namespace SrmBook.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, DateTime? searchDate)
         {
-            return View(await _context.BookOrder.ToListAsync());
+            //날짜별 검색
+            var bookOrders = from m in _context.BookOrder
+                             select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                bookOrders = bookOrders.Where(s => s.BOOK_NAME.Contains(searchString));
+            }
+
+            if (searchDate.HasValue)
+            {
+                // 검색한 날짜의 시작 시간과 끝 시간 계산
+                DateTime startDate = searchDate.Value.Date;
+                DateTime endDate = searchDate.Value.AddDays(1).Date;
+
+                bookOrders = bookOrders.Where(s => s.ORDER_DATE >= startDate && s.ORDER_DATE < endDate);
+            }
+
+            return View(await bookOrders.ToListAsync());
         }
 
 

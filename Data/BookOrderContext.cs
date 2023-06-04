@@ -16,6 +16,5 @@ namespace SrmBook.Data
 
         public DbSet<SrmBook.Models.BookOrder> BookOrder { get; set; } = default!;
         public DbSet<SrmBook.Models.BookInventory> BookInventory { get; set; } = default!;
-        public DbSet<SrmBook.Models.BookUser> BookUser { get; set; } = default!;
     }
 }
