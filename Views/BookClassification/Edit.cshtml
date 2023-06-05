@@ -10,8 +10,8 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger" enctype="multipart/form-data"></div>
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly"  class="text-danger"></div>
             <input type="hidden" asp-for="BOOK_NUM" />
             <div class="form-group">
                 <label asp-for="BOOK_IMAGE" class="control-label"></label>

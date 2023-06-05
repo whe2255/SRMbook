@@ -117,7 +117,7 @@ namespace SrmBook.Controllers
             {
                 try
                 {
-                    // await ProcessImageFile(bookClassification, imageFile);안댐
+                    await ProcessImageFile(bookClassification, imageFile);
                     _context.Update(bookClassification);
                     await _context.SaveChangesAsync();
                 }

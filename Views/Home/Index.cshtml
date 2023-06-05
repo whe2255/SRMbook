@@ -3,13 +3,26 @@
     ViewData["Title"] = "Home Page";
 }
 
+<div style="margin-top: 50px; text-align: center;" id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active"><img src="img\view.jpg" width="900" height="500" alt="..." /></div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span> <span
+            class="visually-hidden">Previous</span> </button> <button class="carousel-control-next" type="button"
+        data-bs-target="#carouselExampleControls" data-bs-slide="next"> <span class="carousel-control-next-icon"
+            aria-hidden="true"></span> <span class="visually-hidden">Next</span> </button>
+</div>
 
-<h2>Purchase Ranking</h2>
+<h3 style="margin-top: 50px; margin-left: 100px;">
+  <small class="text-body-secondary">도서 발주 순위</small>
+</h3>
 
-<table class="table">
+<div style="margin-left: 100px; text-align: center; display: flex;">
+<table class="table table-hover" style="width: 500px; height: 200px;">
     <thead>
-        <tr>
-            <th>Rank</th>
+        <tr class="table-dark">
+            <th scope="row">Rank</th>
             <th>Book Name</th>
             <th>Total Quantity</th>
         </tr>
@@ -17,10 +30,10 @@
     <tbody>
         @if (Model != null && Model.Any())
         {
-            @for (var i = 0; i < Model.Count; i++)
+            @for (var i = 0; i < Model.Count && i < 3; i++)@* 3등까지 표시 *@
             {
-                <tr>
-                    <td>@(i + 1)</td>
+                <tr class="table-dark">
+                    <td scope="row">@(i + 1)</td>
                     <td>@Model[i].BOOK_NAME</td>
                     <td>@Model[i].TOTAL_QUANTITY</td>
                 </tr>
@@ -28,9 +41,20 @@
         }
         else
         {
-            <tr>
-                <td colspan="3">No data available</td>
+            <tr class="table-dark">
+                <td scope="row" colspan="3">No data available</td>
             </tr>
         }
     </tbody>
 </table>
+<div class="card mb-3 div-dark" style="margin-left:50px; width: 500px; height: 200px;">
+  <h3 class="card-header">공지사항</h3>
+  <div class="card-body">
+    <h5 class="card-title">공지사항</h5>
+    <h6 class="card-subtitle text-muted">공지사항</h6>
+  </div>
+  <div class="card-body">
+    <p class="card-text">공지사항</p>
+  </div>
+</div>
+</div>

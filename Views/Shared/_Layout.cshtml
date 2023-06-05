@@ -1,67 +1,64 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+@{
+    var Key = Context.Session.GetString("USER_SESSION_KEY");
+}
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SrmBook</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/SrmBook.styles.css" asp-append-version="true" />
+    <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.0/dist/cerulean/bootstrap.min.css" rel="stylesheet">
 </head>
-
-<body>
+<body style="background-color: black;">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SrmBook</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">SRMBOOK</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02"
+                    aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        @{
-                            var Key = Context.Session.GetString("USER_SESSION_KEY");
-                        }
-                        @if (Key == null)
+                <div class="collapse navbar-collapse" id="navbarColor02">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                                aria-haspopup="true" aria-expanded="false">회원관리</a>
+                            <div class="dropdown-menu">
+                                @if (Key == null)
+                                {
+                                    <a class="dropdown-item" asp-controller="BookUser" asp-action="Login">로그인</a>
+                                    <a class="dropdown-item" asp-controller="BookUser" asp-action="Register">회원가입</a>
+                                }
+                                else
+                                {
+                                    <a class="dropdown-item" asp-controller="BookUser" asp-action="Logout">로그아웃</a>
+                                    <a class="dropdown-item" asp-controller="BookUser" asp-action="Index">회원정보 수정</a>
+                                }
+                            </div>
+                        </li>
+                        @if (Key != null)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="BookUser"
-                                    asp-action="Register">회원가입</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="BookUser"
-                                    asp-action="Login">로그인</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                                    aria-haspopup="true" aria-expanded="false">도서 분류</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-controller="BookClassification" asp-action="Index">도서 분류</a>
+                                    <a class="dropdown-item" asp-controller="BookInventory" asp-action="Index">도서 재고</a>
+                                </div>
                             </li>
                         }
-
-                        else
+                        @if (Key != null)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark"  asp-controller="BookUser"
-                                    asp-action="Logout">로그아웃</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                                    aria-haspopup="true" aria-expanded="false">도서 발주</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-controller="BookOrder" asp-action="Create">도서 구매</a>
+                                    <a class="dropdown-item" asp-controller="BookOrder" asp-action="Index">도서 구매내역</a>
+                                </div>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="BookUser"
-                                    asp-action="Index">회원정보 수정</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="BookClassification"
-                                    asp-action="Index">도서 분류</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="BookInventory"
-                                    asp-action="Index">도서 재고</a>
-                            </li>            
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="BookOrder"
-                                    asp-action="Create">도서 구매</a>
-                            </li>        
-                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="BookOrder"
-                                    asp-action="Index">도서 구매내역</a>
-                            </li>  
                         }
                     </ul>
                 </div>
