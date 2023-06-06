@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.0/dist/cerulean/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body style="background-color: black;">
     <header>
         <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
@@ -33,7 +34,6 @@
                                 }
                                 else
                                 {
-                                    <a class="dropdown-item" asp-controller="BookUser" asp-action="Logout">로그아웃</a>
                                     <a class="dropdown-item" asp-controller="BookUser" asp-action="Index">회원정보 수정</a>
                                 }
                             </div>
@@ -44,7 +44,8 @@
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
                                     aria-haspopup="true" aria-expanded="false">도서 분류</a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" asp-controller="BookClassification" asp-action="Index">도서 분류</a>
+                                    <a class="dropdown-item" asp-controller="BookClassification" asp-action="Index">도서
+                                        분류</a>
                                     <a class="dropdown-item" asp-controller="BookInventory" asp-action="Index">도서 재고</a>
                                 </div>
                             </li>
@@ -63,6 +64,33 @@
                     </ul>
                 </div>
             </div>
+            <!-- 로그아웃 버튼 -->
+            @if (Key != null)
+            {
+                <div class="btn-group container-fluid" style="width:170px; height:30px;" role="group" aria-label="Basic example">
+                <button class="btn btn-secondary" data-bs-toggle="modal"
+                    data-bs-target="#logoutModal">로그아웃</button>
+                </div>
+            }
+            <!-- 로그아웃 모달 -->
+            <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="logoutModalLabel">로그아웃 확인</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>정말로 로그아웃 하시겠습니까?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                            <a class="btn btn-secondary" asp-controller="BookUser" asp-action="Logout" data-bs-dismiss="modal">로그아웃</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </nav>
     </header>
     <div class="container">
@@ -70,16 +98,17 @@
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - SrmBook - <a asp-area="" asp-controller="Home" asp-action="Index"></a>
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        $(function () {
+            // 로그아웃 버튼 클릭 이벤트 처리
+            $('#logoutModal').on('show.bs.modal', function (e) {
+                // 모달이 열릴 때 추가적인 처리
+            });
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
-
 </html>
