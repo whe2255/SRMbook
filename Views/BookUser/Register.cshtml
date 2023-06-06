@@ -1,51 +1,53 @@
 @model SrmBook.Models.BookUser
-
-<h2>Register</h2>
-
 @using (Html.BeginForm("Register", "BookUser", FormMethod.Post))
-
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.USER_ID)
-        @Html.TextBoxFor(m => m.USER_ID, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.USER_ID)
-    </div>
+    <fieldset style="margin-top: 100px; width: 500px; height: 500px;">
+        <legend>회원가입</legend>
+        <div class="form-group" style="margin-top: 50px;">
+            @Html.LabelFor(m => m.USER_ID, "ID")
+            @Html.TextBoxFor(m => m.USER_ID, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.USER_ID)
+        </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.USER_PW)
-        @Html.PasswordFor(m => m.USER_PW, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.USER_PW)
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.USER_PW, "Password")
+            @Html.PasswordFor(m => m.USER_PW, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.USER_PW)
+        </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.USER_NAME)
-        @Html.TextBoxFor(m => m.USER_NAME, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.USER_NAME)
-    </div>
-    
-    <div class="form-group">
-        @Html.LabelFor(m => m.USER_EMAIL)
-        @Html.TextBoxFor(m => m.USER_EMAIL, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.USER_EMAIL)
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.USER_NAME, "Name")
+            @Html.TextBoxFor(m => m.USER_NAME, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.USER_NAME)
+        </div>
 
-     <div class="form-group">
-        @Html.LabelFor(m => m.PUBLISHER)
-        @Html.TextBoxFor(m => m.PUBLISHER, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.PUBLISHER)
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.USER_EMAIL, "E-mail")
+            @Html.TextBoxFor(m => m.USER_EMAIL, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.USER_EMAIL)
+        </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.USER_TYPE)
-        @Html.DropDownListFor(m => m.USER_TYPE, new List<SelectListItem>
-    {
-    new SelectListItem { Value = "friend", Text = "일반회원" },
-    new SelectListItem { Value = "partner", Text = "협력사" }
-    }, "선택해주세요")
-        @Html.ValidationMessageFor(m => m.USER_TYPE)
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.PUBLISHER, "Publisher")
+            @Html.TextBoxFor(m => m.PUBLISHER, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.PUBLISHER)
+        </div>
 
-    <input type="submit" value="Register" class="btn btn-primary" />
+        <div class="form-group" style="margin-top: 5px;">
+            @Html.LabelFor(m => m.USER_TYPE, "회원 유형")
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="USER_TYPE" id="friend" value="friend" checked>
+                <label class="form-check-label" for="friend">일반회원</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="USER_TYPE" id="partner" value="partner">
+                <label class="form-check-label" for="partner">협력사</label>
+            </div>
+            @Html.ValidationMessageFor(m => m.USER_TYPE)
+        </div>
+
+        <button type="submit" value="Register" class="btn btn-light">sign</button>
+    </fieldset>
 }

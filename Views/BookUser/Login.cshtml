@@ -1,29 +1,27 @@
 @model SrmBook.Models.LoginView
 
-<h2>Login</h2>
 
 @using (Html.BeginForm("Login", "BookUser", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.USER_ID)
-        @Html.TextBoxFor(m => m.USER_ID, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.USER_ID)
+    <div class="form-group" style="margin-top: 100px; width: 500px; height: 200px;">
+        <label class="form-label mt-4">Login</label>
+        <div class="form-floating mb-3">
+            @Html.TextBoxFor(m => m.USER_ID, new { @class = "form-control", id = "floatingInput", placeholder ="ID"})
+            @Html.LabelFor(m => m.USER_ID, "ID")
+        </div>
+        <div class="form-floating">
+            @Html.PasswordFor(m => m.USER_PW, new { @class = "form-control", id = "floatingPassword", placeholder = "Password"})
+            @Html.LabelFor(m => m.USER_PW, "Password")
+        </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.USER_PW)
-        @Html.PasswordFor(m => m.USER_PW, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.USER_PW)
-    </div>
-
-    @if (!ViewData.ModelState.IsValid)//아이디 비밀번호 틀렸을 때 경고메시지
+    @if (!ViewData.ModelState.IsValid)
     {
         <div class="alert alert-danger">
             @Html.ValidationSummary(false, "", new { @class = "text-danger" })
         </div>
     }
-
-    <input type="submit" value="Login" class="btn btn-primary" />
+    <button type="submit" value="Login" class="btn btn-light">login</button>
 }
