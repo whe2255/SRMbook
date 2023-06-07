@@ -75,7 +75,7 @@ namespace SrmBook.Controllers
         }
         // 로그아웃
         public IActionResult Logout()
-        {
+        { 
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
