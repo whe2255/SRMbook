@@ -5,77 +5,85 @@
     var Key = Context.Session.GetString("USER_TYPE_KEY");
 }
 
-<h1>Index</h1>
-@if (Key == "admin")
-{
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-}
+<fieldset style="margin-top: 50px;">
+    <legend>재고 도서</legend>
+</fieldset>
+
 @* 검색 *@
-<form asp-controller="BookInventory" asp-action="Index" method="get">
-    <p>
-        <select asp-for="BookGenre" asp-items="Model.Genre">
+<form asp-controller="BookInventory" asp-action="Index" method="get" style="display: flex;">
+    <div style="display: flex;">
+        <select style="width:100px;" class="form-select" asp-for="BookGenre" asp-items="Model.Genre">
             <option value="">All</option>
         </select>
-        Title: <input type="text" name="searchString" />
-        <input type="submit" value="Filter" />
-    </p>
+        <input style="margin-left: 5px; width:350px;" class="form-control me-sm-2" type="text" name="searchString" />
+        <input class="btn btn-outline-light" type="submit" value="검색" />
+    </div>
 </form>
-<table class="table">
+
+@if (Key == "admin")
+{
+    <p>
+    <div style="margin-top: 50px;">
+        <a class="btn btn-outline-light" asp-action="Create">도서 재고 등록</a>
+    </div>
+    </p>
+}
+
+<table style="margin-top: 10px;" class="table table-hover">
     <thead>
-        <tr>
-            <th>
+        <tr class="table-dark">
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.BookInventory![0].BOOK_NUM)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.BookInventory![0].BOOK_CLASS)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.BookInventory![0].BOOK_NAME)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.BookInventory![0].BOOK_WRITER)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.BookInventory![0].BOOK_PRICE)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.BookInventory![0].BOOK_QUANTITY)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.BookInventory!) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.BOOK_NUM)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BOOK_CLASS)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BOOK_NAME)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BOOK_WRITER)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BOOK_PRICE)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BOOK_QUANTITY)
-            </td>
-            <td>
-                  @if (Key == "admin")
+        @foreach (var item in Model.BookInventory!)
+        {
+            <tr class="table-dark">
+                <td scope="row">
+                    @Html.DisplayFor(modelItem => item.BOOK_NUM)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BOOK_CLASS)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BOOK_NAME)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BOOK_WRITER)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BOOK_PRICE)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BOOK_QUANTITY)
+                </td>
+                <td>
+                    <a class="btn btn-outline-light" asp-action="Details" asp-route-id="@item.BOOK_NUM">세부정보</a>
+                    @if (Key == "admin")
                     {
-                <a asp-action="Edit" asp-route-id="@item.BOOK_NUM">Edit</a> 
-                <a asp-action="Delete" asp-route-id="@item.BOOK_NUM">Delete</a>
+                        <a style="margin-left: 5px;" class="btn btn-outline-light" asp-action="Edit" asp-route-id="@item.BOOK_NUM">수정</a>
+                        <a style="margin-left: 5px;" class="btn btn-outline-light" asp-action="Delete" asp-route-id="@item.BOOK_NUM">삭제</a>
                     }
-                <a asp-action="Details" asp-route-id="@item.BOOK_NUM">Details</a> 
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

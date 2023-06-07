@@ -5,11 +5,11 @@
     var Key = Context.Session.GetString("USER_TYPE_KEY");
 }
 
-<h1>Details</h1>
+<fieldset style="margin-top: 50px;">
+    <legend>재고도서 세부정보</legend>
+</fieldset>
 
 <div>
-    <h4>BookInventory</h4>
-    <hr />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.BOOK_NUM)
@@ -52,7 +52,7 @@
 <div>
     @if (Key == "admin")
     {
-        <a asp-action="Edit" asp-route-id="@Model?.BOOK_NUM">Edit</a>
+        <a class="btn btn-outline-light" asp-action="Edit" asp-route-id="@Model?.BOOK_NUM">재고 수정</a>
     }
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-outline-light" asp-action="Index">목록으로 돌아가기</a>
 </div>
