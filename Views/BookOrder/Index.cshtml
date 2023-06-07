@@ -6,44 +6,60 @@
     var admin = Context.Session.GetString("USER_TYPE_KEY");
 }
 
-<h1>Index</h1>
+<fieldset style="margin-top: 50px;">
+    <legend>발주 내역</legend>
+</fieldset>
+
 @if (Key != null)
 {
     <p>
-        <a asp-action="Create">Create New</a>
+    <div style="margin-top: 50px;">
+        <a class="btn btn-outline-light" asp-action="Create">발주</a>
+    </div>
     </p>
     //날짜별 검색
     @using (Html.BeginForm("Index", "BookOrder", FormMethod.Get))
     {
-        <p>
-            Search by Book Name: @Html.TextBox("searchString", ViewBag.CurrentFilter as string)
-            <input type="submit" value="Search" />
-        </p>
+        <div>
+            <p style="display: inline-block;">도서 제목으로 검색 :</p>
+            <p style="display: inline-block;">
+                @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
+            </p>
+            <p style="display: inline-block;">
+                <input class="form-control me-sm-2" type="submit" value="Search" />
+            </p>
+        </div>
 
-        <p>
-            Search by Date: @Html.TextBox("searchDate", ViewBag.CurrentDate as string, new { @class = "datepicker" })
-            <input type="submit" value="Search" />
-        </p>
+        <div>
+            <p style="display: inline-block;">날짜별로 검색 :</p>
+            <p style="display: inline-block;">
+                @Html.TextBox("searchDate", ViewBag.CurrentDate as string, new { @class = "datepicker form-control" })
+            </p>
+            <p style="display: inline-block;">
+                <input class="form-control me-sm-2" type="submit" value="Search" />
+            </p>
+        </div>
+
     }
-    <table class="table">
+    <table style="margin-top: 10px;" class="table table-hover">
         <thead>
-            <tr>
-                <th>
+            <tr class="table-dark">
+                <th scope="col">
                     @Html.DisplayNameFor(model => model.USER_ID)
                 </th>
-                <th>
+                <th scope="col">
                     @Html.DisplayNameFor(model => model.ORDER_DATE)
                 </th>
-                <th>
+                <th scope="col">
                     @Html.DisplayNameFor(model => model.BOOK_QUANTITY)
                 </th>
-                <th>
+                <th scope="col">
                     @Html.DisplayNameFor(model => model.TOTAL_PRICE)
                 </th>
-                <th>
+                <th scope="col">
                     @Html.DisplayNameFor(model => model.BOOK_NAME)
                 </th>
-                <th>
+                <th scope="col">
                     @Html.DisplayNameFor(model => model.BOOK_NUM)
                 </th>
                 <th></th>
@@ -54,8 +70,8 @@
             {
                 if (item.USER_ID == Key || admin == "admin")//로그인한 사람만 보기 가능, 관리자는 전부 보기 가능
                 {
-                    <tr>
-                        <td>
+                    <tr class="table-dark">
+                        <td scope="row">
                             @Html.DisplayFor(modelItem => item.USER_ID)
                         </td>
                         <td>
@@ -78,15 +94,16 @@
                             @Html.DisplayFor(modelItem => item.BOOK_NUM)
                         </td>
                         <td>
-                            <a asp-action="Details" asp-route-id="@item.ORDER_NUM">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.ORDER_NUM">Delete</a>
+                            <a class="btn btn-outline-light" asp-action="Details" asp-route-id="@item.ORDER_NUM">발주 세부정보</a>
+                            <a style="margin-left: 5px;" class="btn btn-outline-light" asp-action="Delete"
+                                asp-route-id="@item.ORDER_NUM">발주 취소</a>
                         </td>
                     </tr>
                 }
             }
         </tbody>
     </table>
-//datepicker
+    //datepicker
     @section Scripts {
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
