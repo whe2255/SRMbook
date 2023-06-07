@@ -10,6 +10,7 @@ public class BookUser
     public int USER_NUM { get; set; }
 
     [Required(ErrorMessage = "사용자 이름을 입력하세요."), StringLength(5)]
+    [RegularExpression("^[^0-9]+$", ErrorMessage = "숫자는 사용할 수 없습니다.")]
     public string USER_NAME { get; set; }
 
     [Required(ErrorMessage = "사용자 아이디를 입력하세요."), StringLength(15)]

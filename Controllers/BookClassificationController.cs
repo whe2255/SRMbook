@@ -21,7 +21,7 @@ namespace SrmBook.Controllers
             {
                 return Problem("Entity set 'BookClassification'  is null.");
             }
-            //장르별 검색, 검색
+            //장르별 검색, 검색, linq쿼리
             IQueryable<string> genreQuery = from m in _context.BookClassification
                                             orderby m.BOOK_CLASS
                                             select m.BOOK_CLASS;
@@ -64,7 +64,6 @@ namespace SrmBook.Controllers
 
             return View(bookClassification);
         }
-
 
         public IActionResult Create()
         {

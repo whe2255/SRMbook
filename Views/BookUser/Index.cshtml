@@ -3,16 +3,18 @@
 @{
     var Key = Context.Session.GetString("USER_SESSION_KEY");
 }
-<h2>User List</h2>
-<table class="table">
+<fieldset style="margin-top: 50px;">
+    <legend>회원 정보</legend>
+</fieldset>
+<table class="table table-hover">
     <thead>
-        <tr>
-            <th>USER_ID</th>
-            <th>USER_NAME</th>
-            <th>USER_TYPE</th>
-            <th>EMAIL</th>
-            <th>PUBLISHER</th>
-            <th>Action</th>
+        <tr class="table-dark">
+            <th scope="col">ID</th>
+            <th scope="col">이름</th>
+            <th scope="col">회원 유형</th>
+            <th scope="col">EMAIL</th>
+            <th scope="col">출판사</th>
+            <th scope="col">정보 수정 및 삭제</th>
         </tr>
     </thead>
     <tbody>
@@ -20,21 +22,22 @@
         {
             if (Key == user.USER_ID)//로그인한 본인만 정보가 보이고 수정 삭제가 가능
             {
-                <tr>
+                <tr class="table-dark">
                     <td>@user.USER_ID</td>
                     <td>@user.USER_NAME</td>
                     <td>@user.USER_TYPE</td>
                     <td>@user.USER_EMAIL</td>
                     <td>@user.PUBLISHER</td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { userNum = user.USER_NUM }, new { @class = "btn btn-primary" })
+                    <td style="display: flex; align-items: center;">
+                        @Html.ActionLink("정보수정", "Edit", new { userNum = user.USER_NUM }, new { @class = "btn btn-outline-light" })
                         @using (Html.BeginForm("Delete", "BookUser", FormMethod.Get))
                         {
                             @Html.AntiForgeryToken()
                             @Html.Hidden("userNum", user.USER_NUM)
-                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button style="margin-left: 5px;" class="btn btn-outline-light" type="submit">회원탈퇴</button>
                         }
                     </td>
+
                 </tr>
             }
         }

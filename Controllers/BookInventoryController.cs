@@ -25,7 +25,7 @@ namespace SrmBook.Controllers
             {
                 return Problem("Entity set 'BookInventory'  is null.");
             }
-            //장르별 검색, 검색
+            //장르별 검색, 검색, linq 쿼리
             IQueryable<string> genreQuery = from m in _context.BookInventory
                                             orderby m.BOOK_CLASS
                                             select m.BOOK_CLASS;

@@ -114,15 +114,11 @@
                 $.ajax({
                     url: '/BookUser/Logout', // 로그아웃을 처리하는 액션 메서드의 경로
                     type: 'GET', // GET 또는 POST 요청 방식을 선택해야 합니다.
-                    success: function (data) {
-                        // 로그아웃 성공 시 처리할 내용
-                        // 예: 페이지 리로드, 다른 동작 등
-                        location.reload(); // 페이지 리로드 예시
+                    success: function (data) {//성공
+                        location.href = "/";
                     },
-                    error: function (xhr, status, error) {
-                        // 로그아웃 실패 시 처리할 내용
-                        // 예: 오류 메시지 출력 등
-                        console.log(error); // 콘솔에 오류 메시지 출력 예시
+                    error: function (xhr, status, error) {//실패
+                        console.log(error); 
                     }
                 });
             });

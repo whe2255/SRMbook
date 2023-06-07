@@ -6,42 +6,41 @@
 
     var Key = Context.Session.GetString("USER_TYPE_KEY");
 }
+<fieldset style="margin-top: 50px;">
+    <legend>도서 분류</legend>
+</fieldset>
 
-<h1>도서 분류</h1>
+@* 검색 *@
+<form asp-controller="BookClassification" asp-action="Index" method="get" style="display: flex;">
+    <div style="display: flex;">
+        <select style="width:100px;" class="form-select" asp-for="BookGenre" asp-items="Model.Genre"><option value="">All</option></select>
+        <input style="margin-left: 5px; width:350px;" class="form-control me-sm-2" type="text" name="searchString" />
+        <input class="btn btn-outline-light" type="submit" value="검색" />
+    </div>
+</form>
 
 @if (Key == "admin")
-
 {
-    <p>
-        <a asp-action="Create">도서 등록</a>
-    </p>
+    <div style="margin-top: 50px;">
+        <a class="btn btn-outline-light" asp-action="Create">도서 등록</a>
+    </div>
 }
-@* 검색 *@
-<form asp-controller="BookClassification" asp-action="Index" method="get">
-    <p>
-        <select asp-for="BookGenre" asp-items="Model.Genre">
-            <option value="">All</option>
-        </select>
-        Title: <input type="text" name="searchString" />
-        <input type="submit" value="Filter" />
-    </p>
-</form>
-<table class="table">
+<table style="margin-top: 10px;" class="table table-hover">
     <thead>
-        <tr>
-            <th>
+        <tr class="table-dark">
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.BookClassification![0].BOOK_IMAGE)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.BookClassification![0].BOOK_CLASS)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.BookClassification![0].BOOK_NAME)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.BookClassification![0].BOOK_WRITER)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.BookClassification![0].BOOK_PRICE)
             </th>
             <th></th>
@@ -50,12 +49,12 @@
     <tbody>
         @foreach (var item in Model.BookClassification!)
         {
-            <tr>
-                <td>
+            <tr class="table-dark">
+                <td scope="row">
                     @if (item.BOOK_IMAGE != null)
                     {
                         <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.BOOK_IMAGE)" alt="Book Image"
-                            style="max-width: 100px; max-height: 100px;" />
+                            style="max-width: 70px; max-height: 180px;" />
                     }
                     else
                     {
@@ -75,14 +74,15 @@
                     @Html.DisplayFor(modelItem => item.BOOK_PRICE)
                 </td>
                 <td>
+                    <a class="btn btn-outline-light" asp-action="Details" asp-route-id="@item.BOOK_NUM">세부정보</a>
                     @if (Key == "admin")
                     {
-                        <a asp-action="Edit" asp-route-id="@item.BOOK_NUM">수정</a>
-                        <a asp-action="Delete" asp-route-id="@item.BOOK_NUM">삭제</a>
+                        <a style="margin-left: 5px;" class="btn btn-outline-light" asp-action="Edit" asp-route-id="@item.BOOK_NUM">수정</a>
+                        <a style="margin-left: 5px;" class="btn btn-outline-light" asp-action="Delete" asp-route-id="@item.BOOK_NUM">삭제</a>
                     }
-                    <a asp-action="Details" asp-route-id="@item.BOOK_NUM">세부정보</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+

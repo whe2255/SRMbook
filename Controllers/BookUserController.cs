@@ -102,7 +102,7 @@ namespace SrmBook.Controllers
                 model.USER_PW = hashedPassword;
                 _context.Entry(model).State = EntityState.Modified;
                 _context.SaveChanges();
-
+                HttpContext.Session.Clear();
                 return RedirectToAction("Index", "Home");
             }
 
