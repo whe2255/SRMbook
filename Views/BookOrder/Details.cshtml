@@ -4,11 +4,12 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+
+<fieldset style="margin-top: 50px;">
+    <legend>발주 상세</legend>
+</fieldset>
 
 <div>
-    <h4>BookOrder</h4>
-    <hr />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.USER_ID)
@@ -53,6 +54,5 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.ORDER_NUM">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+     <a class="btn btn-outline-light" asp-action="Index">이전</a>
 </div>

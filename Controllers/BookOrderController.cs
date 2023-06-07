@@ -74,74 +74,18 @@ namespace SrmBook.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(bookOrder);
-
-                // 재고 수량 차감
-                var bookInventory = _context.BookInventory.Find(bookOrder.BOOK_NUM);
-                if (bookInventory != null)
-                {
-                    bookInventory.BOOK_QUANTITY -= bookOrder.BOOK_QUANTITY;
-                    _context.BookInventory.Update(bookInventory);
-                }
+                // 재고 수량 감소
+                await DecreaseBookInventory(bookOrder.BOOK_NUM, bookOrder.BOOK_QUANTITY);
 
                 // 가격 계산
-                bookOrder.TOTAL_PRICE = CalculateTotalPrice(bookInventory.BOOK_PRICE, bookOrder.BOOK_QUANTITY);
+                bookOrder.TOTAL_PRICE = await CalculateTotalPrice(bookOrder.BOOK_NUM, bookOrder.BOOK_QUANTITY);
 
+                _context.Add(bookOrder);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(bookOrder);
         }
-
-
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.BookOrder == null)
-            {
-                return NotFound();
-            }
-
-            var bookOrder = await _context.BookOrder.FindAsync(id);
-            if (bookOrder == null)
-            {
-                return NotFound();
-            }
-            return View(bookOrder);
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ORDER_NUM,USER_ID,ORDER_DATE,BOOK_QUANTITY,TOTAL_PRICE,BOOK_NAME,BOOK_NUM")] BookOrder bookOrder)
-        {
-            if (id != bookOrder.ORDER_NUM)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(bookOrder);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BookOrderExists(bookOrder.ORDER_NUM))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(bookOrder);
-        }
-
 
         public async Task<IActionResult> Delete(int? id)
         {
@@ -169,12 +113,14 @@ namespace SrmBook.Controllers
             {
                 return Problem("Entity set 'BookOrderContext.BookOrder'  is null.");
             }
+
             var bookOrder = await _context.BookOrder.FindAsync(id);
             if (bookOrder != null)
             {
                 _context.BookOrder.Remove(bookOrder);
             }
-
+            //재고 수량 증가
+            await IncreaseBookInventory(bookOrder.BOOK_NUM, bookOrder.BOOK_QUANTITY);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -185,9 +131,38 @@ namespace SrmBook.Controllers
         }
 
         // 총 가격 계산 메소드
-        private decimal CalculateTotalPrice(decimal bookPrice, int bookQuantity)
+        private async Task<decimal> CalculateTotalPrice(int bookNum, int quantity)
         {
-            return bookPrice * bookQuantity;
+            var bookInventory = await _context.BookInventory.FindAsync(bookNum);
+            if (bookInventory != null)
+            {
+                return bookInventory.BOOK_PRICE * quantity;
+            }
+            return 0;
+        }
+
+        //재고 수량 감소
+        private async Task DecreaseBookInventory(int bookNum, int quantity)
+        {
+            var bookInventory = await _context.BookInventory.FindAsync(bookNum);
+            if (bookInventory != null)
+            {
+                bookInventory.BOOK_QUANTITY -= quantity;
+                _context.BookInventory.Update(bookInventory);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        //재고 수량 증가
+        private async Task IncreaseBookInventory(int bookNum, int quantity)
+        {
+            var bookInventory = await _context.BookInventory.FindAsync(bookNum);
+            if (bookInventory != null)
+            {
+                bookInventory.BOOK_QUANTITY += quantity;
+                _context.BookInventory.Update(bookInventory);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }
