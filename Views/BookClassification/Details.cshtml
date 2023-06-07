@@ -5,11 +5,12 @@
     var Key = Context.Session.GetString("USER_TYPE_KEY");
 }
 
-<h1>세부 정보</h1>
+<fieldset style="margin-top: 50px;">
+    <legend>도서 세부정보</legend>
+</fieldset>
+
 
 <div>
-    <h4>도서 분류</h4>
-    <hr />
     <dl class="row">
          <dd>
                     @if (Model.BOOK_IMAGE != null)
@@ -48,10 +49,10 @@
         </dd>
     </dl>
 </div>
-<div>
+<div style="margin-top: 5px;">
     @if (Key == "admin")
     {
-        <a asp-action="Edit" asp-route-id="@Model?.BOOK_NUM">수정</a>
+        <a class="btn btn-outline-light" asp-action="Edit" asp-route-id="@Model?.BOOK_NUM">수정</a>
     }
-    <a asp-action="Index">목록으로 돌아가기</a>
+    <a class="btn btn-outline-light" asp-action="Index">목록으로 돌아가기</a>
 </div>

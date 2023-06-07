@@ -9,6 +9,14 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\vscode workspace\\SrmBook\\wwwroot\\img\\devil.jpg",
+      "PackagePath": "staticwebassets\\img\\devil.jpg"
+    },
+    {
+      "Id": "C:\\vscode workspace\\SrmBook\\wwwroot\\img\\devil2.jpg",
+      "PackagePath": "staticwebassets\\img\\devil2.jpg"
+    },
+    {
       "Id": "C:\\vscode workspace\\SrmBook\\wwwroot\\img\\view.jpg",
       "PackagePath": "staticwebassets\\img\\view.jpg"
     },
