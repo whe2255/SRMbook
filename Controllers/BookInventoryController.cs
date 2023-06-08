@@ -19,9 +19,9 @@ namespace SrmBook.Controllers
         {
             if (_context.BookInventory == null)
             {
-                return Problem("Entity set 'BookInventory'  is null.");
+                return Problem("Entity set 'BookInventory' is null.");
             }
-            //장르별 검색, 검색, linq 쿼리
+            //검색 쿼리
             IQueryable<string> genreQuery = from m in _context.BookInventory
                                             orderby m.BOOK_CLASS
                                             select m.BOOK_CLASS;
@@ -29,20 +29,7 @@ namespace SrmBook.Controllers
             var BookInventory = from m in _context.BookInventory
                                 select m;
 
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                BookInventory = BookInventory.Where(s => s.BOOK_NAME!.Contains(searchString));
-            }
-
-            if (!string.IsNullOrEmpty(BookGenre))
-            {
-                BookInventory = BookInventory.Where(x => x.BOOK_CLASS == BookGenre);
-            }
-            var BookSearchView = new BookSearchView
-            {
-                Genre = new SelectList(await genreQuery.Distinct().ToListAsync()),
-                BookInventory = await BookInventory.ToListAsync()
-            };
+            var BookSearchView = await SearchBooks(searchString, BookGenre, genreQuery, BookInventory);
 
             return View(BookSearchView);
         }
@@ -166,6 +153,27 @@ namespace SrmBook.Controllers
         private bool BookInventoryExists(int id)
         {
             return _context.BookInventory.Any(e => e.BOOK_NUM == id);
+        }
+        //검색 메소드
+        private async Task<BookSearchView> SearchBooks(string searchString, string BookGenre, IQueryable<string> genreQuery, IQueryable<BookInventory> BookInventory)
+        {
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                BookInventory = BookInventory.Where(s => s.BOOK_NAME!.Contains(searchString));
+            }
+
+            if (!string.IsNullOrEmpty(BookGenre))
+            {
+                BookInventory = BookInventory.Where(x => x.BOOK_CLASS == BookGenre);
+            }
+
+            var BookSearchView = new BookSearchView
+            {
+                Genre = new SelectList(await genreQuery.Distinct().ToListAsync()),
+                BookInventory = await BookInventory.ToListAsync()
+            };
+
+            return BookSearchView;
         }
     }
 }

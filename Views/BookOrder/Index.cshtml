@@ -1,4 +1,4 @@
-@model BookComposite
+@model SrmBook.Models.BookComposite
 
 @{
     ViewData["Title"] = "Index";
@@ -17,7 +17,7 @@
         <a class="btn btn-outline-light" asp-action="Create">발주</a>
     </div>
     </p>
-    //날짜별 검색
+    //날짜별 제목별 검색
     @using (Html.BeginForm("Index", "BookOrder", FormMethod.Get))
     {
         <div>
@@ -79,12 +79,13 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.BOOK_QUANTITY)
                         </td>
+                        @* 소수점 및 콤마 추가 *@
                         <td>
                             @{
                                 decimal totalPrice = item.TOTAL_PRICE;
-                                int totalPriceInt = Decimal.ToInt32(totalPrice); // 소수점 값 제거
+                                int totalPriceInt = Decimal.ToInt32(totalPrice);
                             }
-                            @totalPriceInt
+                            @totalPriceInt.ToString("N0") 
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.BOOK_NAME)

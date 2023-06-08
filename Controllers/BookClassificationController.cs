@@ -19,9 +19,9 @@ namespace SrmBook.Controllers
         {
             if (_context.BookClassification == null)
             {
-                return Problem("Entity set 'BookClassification'  is null.");
+                return Problem("Entity set 'BookClassification' is null.");
             }
-            //장르별 검색, 검색, linq쿼리
+            //검색 쿼리
             IQueryable<string> genreQuery = from m in _context.BookClassification
                                             orderby m.BOOK_CLASS
                                             select m.BOOK_CLASS;
@@ -29,21 +29,7 @@ namespace SrmBook.Controllers
             var BookClassification = from m in _context.BookClassification
                                      select m;
 
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                BookClassification = BookClassification.Where(s => s.BOOK_NAME!.Contains(searchString));
-            }
-
-            if (!string.IsNullOrEmpty(BookGenre))
-            {
-                BookClassification = BookClassification.Where(x => x.BOOK_CLASS == BookGenre);
-            }
-
-            var BookSearchView = new BookSearchView
-            {
-                Genre = new SelectList(await genreQuery.Distinct().ToListAsync()),
-                BookClassification = await BookClassification.ToListAsync()
-            };
+            var BookSearchView = await SearchBooks(searchString, BookGenre, genreQuery, BookClassification);
 
             return View(BookSearchView);
         }
@@ -176,7 +162,7 @@ namespace SrmBook.Controllers
         {
             return _context.BookClassification.Any(e => e.BOOK_NUM == id);
         }
-        //image파일 바이너리로 변환
+        //image파일 바이너리로 변환 메소드
         private async Task ProcessImageFile(BookClassification bookClassification, IFormFile imageFile)
         {
             if (imageFile != null && imageFile.Length > 0)
@@ -187,6 +173,27 @@ namespace SrmBook.Controllers
                     bookClassification.BOOK_IMAGE = memoryStream.ToArray();
                 }
             }
+        }
+        //검색 메소드 
+        private async Task<BookSearchView> SearchBooks(string searchString, string BookGenre, IQueryable<string> genreQuery, IQueryable<BookClassification> BookClassification)
+        {
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                BookClassification = BookClassification.Where(s => s.BOOK_NAME!.Contains(searchString));
+            }
+
+            if (!string.IsNullOrEmpty(BookGenre))
+            {
+                BookClassification = BookClassification.Where(x => x.BOOK_CLASS == BookGenre);
+            }
+
+            var BookSearchView = new BookSearchView
+            {
+                Genre = new SelectList(await genreQuery.Distinct().ToListAsync()),
+                BookClassification = await BookClassification.ToListAsync()
+            };
+
+            return BookSearchView;
         }
     }
 }

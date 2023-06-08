@@ -16,30 +16,16 @@ namespace SrmBook.Controllers
 
         public async Task<IActionResult> Index(string searchString, DateTime? searchDate)
         {
-            //날짜별 검색
-            var bookOrders = from m in _context.BookOrder
-                             select m;
+            // 발주 검색
+            var bookOrders = await SearchBookOrders(searchString, searchDate);
 
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                bookOrders = bookOrders.Where(s => s.BOOK_NAME.Contains(searchString));
-            }
-
-            if (searchDate.HasValue)
-            {
-                // 검색한 날짜의 시작 시간과 끝 시간 계산
-                DateTime startDate = searchDate.Value.Date;
-                DateTime endDate = searchDate.Value.AddDays(1).Date;
-
-                bookOrders = bookOrders.Where(s => s.ORDER_DATE >= startDate && s.ORDER_DATE < endDate);
-            }
             // 재고 정보 가져오기
             var bookInventory = await _context.BookInventory.ToListAsync();
 
             // 복합ViewModel에 데이터 할당
             var bookComposite = new BookComposite
             {
-                BookOrders = await bookOrders.ToListAsync(),
+                BookOrders = bookOrders,
                 BookInventory = bookInventory
             };
 
@@ -166,6 +152,29 @@ namespace SrmBook.Controllers
                 _context.BookInventory.Update(bookInventory);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        //검색 메소드
+        private async Task<List<BookOrder>> SearchBookOrders(string searchString, DateTime? searchDate)
+        {
+            var bookOrders = from m in _context.BookOrder
+                             select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                bookOrders = bookOrders.Where(s => s.BOOK_NAME.Contains(searchString));
+            }
+
+            if (searchDate.HasValue)
+            {
+                // 검색한 날짜의 시작 시간과 끝 시간 계산
+                DateTime startDate = searchDate.Value.Date;
+                DateTime endDate = searchDate.Value.AddDays(1).Date;
+
+                bookOrders = bookOrders.Where(s => s.ORDER_DATE >= startDate && s.ORDER_DATE < endDate);
+            }
+
+            return await bookOrders.ToListAsync();
         }
     }
 }

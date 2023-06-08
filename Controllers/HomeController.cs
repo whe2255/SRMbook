@@ -16,7 +16,14 @@ public class HomeController : Controller
     }
     public async Task<IActionResult> Index()
     {
-    //구매 순위
+        //발주 순위 계산
+        var purchaseRanking = await CalculatePurchaseRanking();
+
+        return View(purchaseRanking);
+    }
+    //발주 순위 메소드
+    private async Task<List<PurchaseRankingViewModel>> CalculatePurchaseRanking()
+    {
         var purchaseRanking = await _context.BookOrder
             .GroupBy(p => p.BOOK_NAME)
             .Select(g => new PurchaseRankingViewModel
@@ -27,9 +34,9 @@ public class HomeController : Controller
             .OrderByDescending(p => p.TOTAL_QUANTITY)
             .ToListAsync();
 
-        return View(purchaseRanking);
+        return purchaseRanking;
     }
-    
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

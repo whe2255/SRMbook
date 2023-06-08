@@ -1,8 +1,5 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace SrmBook.Models;
-//발주와 재고의 복합 모델
+//발주와 재고의 복합 뷰 모델
 public class BookComposite
 
 {
