@@ -1,4 +1,3 @@
-
 using Microsoft.EntityFrameworkCore;
 using SrmBook.Data;
 using Microsoft.Extensions.DependencyInjection;

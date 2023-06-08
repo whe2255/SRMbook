@@ -1,5 +1,4 @@
 namespace SrmBook.Models;
-
 //구매 랭킹을 위한 뷰모델
 public class PurchaseRankingViewModel
 {

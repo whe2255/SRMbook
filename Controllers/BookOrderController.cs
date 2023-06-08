@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SrmBook.Data;
 using SrmBook.Models;
@@ -42,14 +36,14 @@ namespace SrmBook.Controllers
             // 재고 정보 가져오기
             var bookInventory = await _context.BookInventory.ToListAsync();
 
-            // ViewModel에 데이터 할당
-            var viewModel = new BookComposite
+            // 복합ViewModel에 데이터 할당
+            var bookComposite = new BookComposite
             {
                 BookOrders = await bookOrders.ToListAsync(),
                 BookInventory = bookInventory
             };
 
-            return View(viewModel);
+            return View(bookComposite);
         }
 
 
