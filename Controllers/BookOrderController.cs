@@ -39,8 +39,17 @@ namespace SrmBook.Controllers
 
                 bookOrders = bookOrders.Where(s => s.ORDER_DATE >= startDate && s.ORDER_DATE < endDate);
             }
+            // 재고 정보 가져오기
+            var bookInventory = await _context.BookInventory.ToListAsync();
 
-            return View(await bookOrders.ToListAsync());
+            // ViewModel에 데이터 할당
+            var viewModel = new BookComposite
+            {
+                BookOrders = await bookOrders.ToListAsync(),
+                BookInventory = bookInventory
+            };
+
+            return View(viewModel);
         }
 
 
