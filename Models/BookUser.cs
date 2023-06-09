@@ -31,7 +31,7 @@ public class BookUser
     [Required(ErrorMessage = "출판사명을 입력하세요"), StringLength(15)]
     public string PUBLISHER { get; set; }
 
-    [Required(ErrorMessage = "주소를 입력하세요"), StringLength(50)]
+    [Required(ErrorMessage = "주소를 입력하세요")]
     public string ADDRESS { get; set; }
 
     [Required(ErrorMessage = "연락처를 입력하세요")]

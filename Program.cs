@@ -4,7 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddDbContext<BookDeliveryContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BookDeliveryContext") ?? throw new InvalidOperationException("Connection string 'BookDeliveryContext' not found.")));
 builder.Services.AddDbContext<BookOrderContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BookOrderContext") ?? throw new InvalidOperationException("Connection string 'BookOrderContext' not found.")));
 builder.Services.AddDbContext<BookInventoryContext>(options =>

@@ -1,0 +1,83 @@
+@model IEnumerable<SrmBook.Models.BookDelivery>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ORDER_NUM)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.USER_ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DELIVERY_DATE)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BOOK_QUANTITY)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BOOK_NUM)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BOOK_NAME)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ADDRESS)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TEL)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.STATUS)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ORDER_NUM)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.USER_ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DELIVERY_DATE)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BOOK_QUANTITY)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BOOK_NUM)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BOOK_NAME)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ADDRESS)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TEL)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.STATUS)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.DELIVERY_NUM">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.DELIVERY_NUM">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.DELIVERY_NUM">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
