@@ -30,4 +30,11 @@ public class BookUser
 
     [Required(ErrorMessage = "출판사명을 입력하세요"), StringLength(15)]
     public string PUBLISHER { get; set; }
+
+    [Required(ErrorMessage = "주소를 입력하세요"), StringLength(50)]
+    public string ADDRESS { get; set; }
+
+    [Required(ErrorMessage = "연락처를 입력하세요")]
+    [RegularExpression(@"^\d{3}-\d{3,4}-\d{4}$", ErrorMessage = "유효한 전화번호 형식이 아닙니다, -를 입력해주세요")]
+    public string TEL { get; set; }
 }

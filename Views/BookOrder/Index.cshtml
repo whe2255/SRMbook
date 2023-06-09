@@ -13,11 +13,11 @@
 @if (Key != null)
 {
     <p>
-    <div style="margin-top: 50px;">
+    <div style="margin-top: 30px;">
         <a class="btn btn-outline-light" asp-action="Create">발주</a>
     </div>
     </p>
-                //날짜별 제목별 검색
+    //날짜별 제목별 검색
     @using (Html.BeginForm("Index", "BookOrder", FormMethod.Get))
     {
         <div>
@@ -95,7 +95,7 @@
                         </td>
                         <td>
                             <a class="btn btn-outline-light" asp-action="Details" asp-route-id="@item.ORDER_NUM">발주 세부정보</a>
-                            @if (item.ORDER_CONFIRMED)//발주 확인됐을때 관리자만 취소 가능 
+                            @if (item.ORDER_CONFIRMED)//발주 확인됐을때 관리자만 취소 가능
                             {
                                 <a style="margin-left: 5px;" class="text-success">발주 확인됨</a>
                                 @if (admin == "admin")

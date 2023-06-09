@@ -40,6 +40,18 @@
             @Html.ValidationMessageFor(m => m.PUBLISHER)
         </div>
 
+        <div class="form-group">
+            @Html.LabelFor(m => m.ADDRESS, "Address")
+            @Html.TextBoxFor(m => m.ADDRESS, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.ADDRESS)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.TEL, "Tel")
+            @Html.TextBoxFor(m => m.TEL, new { @class = "form-control", type = "tel"})
+            @Html.ValidationMessageFor(m => m.TEL)
+        </div>
+
         <div class="form-group" style="margin-top: 5px;">
             @Html.LabelFor(m => m.USER_TYPE, "회원 유형")
             <div class="form-check">

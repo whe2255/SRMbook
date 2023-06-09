@@ -15,6 +15,8 @@
             <th scope="col">회원 유형</th>
             <th scope="col">EMAIL</th>
             <th scope="col">출판사</th>
+            <th scope="col">주소</th>
+            <th scope="col">연락처</th>
             <th scope="col">정보 수정 및 삭제</th>
         </tr>
     </thead>
@@ -29,6 +31,8 @@
                     <td>@user.USER_TYPE</td>
                     <td>@user.USER_EMAIL</td>
                     <td>@user.PUBLISHER</td>
+                    <td>@user.ADDRESS</td>
+                    <td>@user.TEL</td>
                     <td style="display: flex; align-items: center;">
                         @Html.ActionLink("정보수정", "Edit", new { userNum = user.USER_NUM }, new { @class = "btn btn-outline-light" })
                         @using (Html.BeginForm("Delete", "BookUser", FormMethod.Get))
