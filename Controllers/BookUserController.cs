@@ -64,7 +64,7 @@ namespace SrmBook.Controllers
 
             if (user == null || !VerifyPassword(model.USER_PW, user.USER_PW))//암호화된 비밀번호 검증
             {
-                ModelState.AddModelError("LoginFailed", "아이디 또는 비밀번호가 잘못되었습니다.");
+                ModelState.AddModelError(string.Empty, "아이디 또는 비밀번호가 잘못되었습니다.");
                 return View();
             }
 

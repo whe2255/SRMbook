@@ -66,7 +66,7 @@ namespace SrmBook.Controllers
                 //발주 시 도서 재고에 있는 도서 제목과 도서 번호가 일치하는지 확인
                 var bookInventory = await _context.BookInventory.FirstOrDefaultAsync(b => b.BOOK_NAME == bookOrder.BOOK_NAME);
                 var bookNum = await _context.BookInventory.FirstOrDefaultAsync(c => c.BOOK_NUM == bookOrder.BOOK_NUM);
-                
+
                 if (bookInventory == null || bookNum == null)
                 {
                     ModelState.AddModelError(string.Empty, "도서 제목이나 도서 번호를 확인해주세요");
@@ -75,7 +75,13 @@ namespace SrmBook.Controllers
                 else
                 {
                     // 재고 수량 감소
-                    await DecreaseBookInventory(bookOrder.BOOK_NUM, bookOrder.BOOK_QUANTITY);
+                    bool isStockAvailable = await DecreaseBookInventory(bookOrder.BOOK_NUM, bookOrder.BOOK_QUANTITY);
+
+                    if (!isStockAvailable)
+                    {
+                        ModelState.AddModelError(string.Empty, "재고가 부족하여 구매할 수 없습니다");
+                        return View(bookOrder);
+                    }
                     // 가격 계산
                     bookOrder.TOTAL_PRICE = await CalculateTotalPrice(bookOrder.BOOK_NUM, bookOrder.BOOK_QUANTITY);
                     _context.Add(bookOrder);
@@ -123,6 +129,26 @@ namespace SrmBook.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        
+        //발주 확인 메소드
+        public async Task<IActionResult> ConfirmOrder(int orderId)
+        {
+            var order = await _context.BookOrder.FindAsync(orderId);
+
+            if (order == null)
+            {
+                // 발주가 존재하지 않을 경우 에러 처리
+                return NotFound();
+            }
+
+            order.ORDER_CONFIRMED = true;
+
+            _context.Entry(order).Property(x => x.ORDER_CONFIRMED).IsModified = true;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
 
         private bool BookOrderExists(int id)
         {
@@ -141,16 +167,22 @@ namespace SrmBook.Controllers
         }
 
         //재고 수량 감소
-        private async Task DecreaseBookInventory(int bookNum, int quantity)
+        private async Task<bool> DecreaseBookInventory(int bookNum, int quantity)
         {
             var bookInventory = await _context.BookInventory.FindAsync(bookNum);
             if (bookInventory != null)
             {
-                bookInventory.BOOK_QUANTITY -= quantity;
-                _context.BookInventory.Update(bookInventory);
-                await _context.SaveChangesAsync();
+                if (bookInventory.BOOK_QUANTITY >= quantity)
+                {
+                    bookInventory.BOOK_QUANTITY -= quantity;
+                    _context.BookInventory.Update(bookInventory);
+                    await _context.SaveChangesAsync();
+                    return true; // 재고 충분하여 구매 가능
+                }
             }
+            return false; // 재고 부족으로 구매 불가능
         }
+
 
         //재고 수량 증가
         private async Task IncreaseBookInventory(int bookNum, int quantity)

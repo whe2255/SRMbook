@@ -17,7 +17,7 @@
         <a class="btn btn-outline-light" asp-action="Create">발주</a>
     </div>
     </p>
-    //날짜별 제목별 검색
+                //날짜별 제목별 검색
     @using (Html.BeginForm("Index", "BookOrder", FormMethod.Get))
     {
         <div>
@@ -85,7 +85,7 @@
                                 decimal totalPrice = item.TOTAL_PRICE;
                                 int totalPriceInt = Decimal.ToInt32(totalPrice);
                             }
-                            @totalPriceInt.ToString("N0") 
+                            @totalPriceInt.ToString("N0")
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.BOOK_NAME)
@@ -95,8 +95,24 @@
                         </td>
                         <td>
                             <a class="btn btn-outline-light" asp-action="Details" asp-route-id="@item.ORDER_NUM">발주 세부정보</a>
-                            <a style="margin-left: 5px;" class="btn btn-outline-light" asp-action="Delete"
-                                asp-route-id="@item.ORDER_NUM">발주 취소</a>
+                            @if (item.ORDER_CONFIRMED)//발주 확인됐을때 관리자만 취소 가능 
+                            {
+                                <a style="margin-left: 5px;" class="text-success">발주 확인됨</a>
+                                @if (admin == "admin")
+                                {
+                                    <a style="margin-left: 5px;" class="btn btn-outline-light" asp-action="Delete"
+                                        asp-route-id="@item.ORDER_NUM">발주 취소</a>
+                                }
+                            }
+                            else
+                            {
+                                @if (admin == "admin")
+                                {
+                                    <a class="btn btn-outline-light" asp-action="ConfirmOrder" asp-route-orderId="@item.ORDER_NUM">발주 확인</a>
+                                }
+                                <a style="margin-left: 5px;" class="btn btn-outline-light" asp-action="Delete"
+                                    asp-route-id="@item.ORDER_NUM">발주 취소</a>
+                            }
                         </td>
                     </tr>
                 }
@@ -104,9 +120,9 @@
         </tbody>
     </table>
 
-<fieldset style="margin-top: 50px;">
-    <legend>도서 재고</legend>
-</fieldset>
+    <fieldset style="margin-top: 50px;">
+        <legend>도서 재고</legend>
+    </fieldset>
     //재고 테이블
     <table style="margin-top: 10px;" class="table table-hover">
         <thead>

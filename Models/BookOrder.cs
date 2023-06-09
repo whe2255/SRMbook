@@ -31,5 +31,6 @@ public class BookOrder
     [Display(Name = "도서 번호")]
     [Required(ErrorMessage = "도서번호를 입력해주세요")]
     public int BOOK_NUM { get; set; }
+    public bool ORDER_CONFIRMED { get; set; }
 
 }
