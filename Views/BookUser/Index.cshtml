@@ -2,6 +2,7 @@
 
 @{
     var Key = Context.Session.GetString("USER_SESSION_KEY");
+    var admin = Context.Session.GetString("USER_TYPE_KEY");
 }
 <fieldset style="margin-top: 50px;">
     <legend>회원 정보</legend>
@@ -20,7 +21,7 @@
     <tbody>
         @foreach (var user in Model)
         {
-            if (Key == user.USER_ID)//로그인한 본인만 정보가 보이고 수정 삭제가 가능
+            if (Key == user.USER_ID || admin == "admin")//로그인한 본인만 정보가 보이고 수정 삭제가 가능, 관리자는 전부 가능
             {
                 <tr class="table-dark">
                     <td>@user.USER_ID</td>
