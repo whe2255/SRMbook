@@ -63,15 +63,25 @@ namespace SrmBook.Controllers
         {
             if (ModelState.IsValid)
             {
-                // 재고 수량 감소
-                await DecreaseBookInventory(bookOrder.BOOK_NUM, bookOrder.BOOK_QUANTITY);
-
-                // 가격 계산
-                bookOrder.TOTAL_PRICE = await CalculateTotalPrice(bookOrder.BOOK_NUM, bookOrder.BOOK_QUANTITY);
-
-                _context.Add(bookOrder);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //발주 시 도서 재고에 있는 도서 제목과 도서 번호가 일치하는지 확인
+                var bookInventory = await _context.BookInventory.FirstOrDefaultAsync(b => b.BOOK_NAME == bookOrder.BOOK_NAME);
+                var bookNum = await _context.BookInventory.FirstOrDefaultAsync(c => c.BOOK_NUM == bookOrder.BOOK_NUM);
+                
+                if (bookInventory == null || bookNum == null)
+                {
+                    ModelState.AddModelError(string.Empty, "도서 제목이나 도서 번호를 확인해주세요");
+                    return View(bookOrder);
+                }
+                else
+                {
+                    // 재고 수량 감소
+                    await DecreaseBookInventory(bookOrder.BOOK_NUM, bookOrder.BOOK_QUANTITY);
+                    // 가격 계산
+                    bookOrder.TOTAL_PRICE = await CalculateTotalPrice(bookOrder.BOOK_NUM, bookOrder.BOOK_QUANTITY);
+                    _context.Add(bookOrder);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
             return View(bookOrder);
         }
