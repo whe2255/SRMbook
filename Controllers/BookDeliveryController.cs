@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -19,13 +15,22 @@ namespace SrmBook.Controllers
             _context = context;
         }
 
-        // GET: BookDelivery
         public async Task<IActionResult> Index()
         {
-              return View(await _context.BookDelivery.ToListAsync());
+            //발주와 배송
+            var bookDelivery = await _context.BookDelivery.ToListAsync();
+            var bookOrder = await _context.BookOrder.ToListAsync();
+
+            // 복합ViewModel에 데이터 할당
+            var bookDeliveryComposite = new BookDeliveryComposite
+            {
+                BookOrder = bookOrder,
+                BookDelivery = bookDelivery
+            };
+
+            return View(bookDeliveryComposite);
         }
 
-        // GET: BookDelivery/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.BookDelivery == null)
@@ -43,18 +48,37 @@ namespace SrmBook.Controllers
             return View(bookDelivery);
         }
 
-        // GET: BookDelivery/Create
-        public IActionResult Create()
+        public IActionResult Create(int orderNum)
         {
-            return View();
+            var bookOrder = _context.BookOrder.FirstOrDefault(o => o.ORDER_NUM == orderNum);
+
+            if (bookOrder != null)
+            {
+                var bookUser = _context.BookUser.FirstOrDefault(u => u.USER_ID == bookOrder.USER_ID);
+
+                if (bookUser != null)
+                {
+                    var bookDelivery = new BookDelivery
+                    {
+                        ORDER_NUM = bookOrder.ORDER_NUM,
+                        USER_ID = bookOrder.USER_ID,
+                        BOOK_QUANTITY = bookOrder.BOOK_QUANTITY,
+                        BOOK_NUM = bookOrder.BOOK_NUM,
+                        BOOK_NAME = bookOrder.BOOK_NAME,
+                        ADDRESS = bookUser.ADDRESS,
+                        TEL = bookUser.TEL
+                    };
+
+                    return View(bookDelivery);
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
-        // POST: BookDelivery/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DELIVERY_NUM,ORDER_NUM,USER_ID,DELIVERY_DATE,BOOK_QUANTITY,BOOK_NUM,BOOK_NAME,ADDRESS,TEL,STATUS")] BookDelivery bookDelivery)
+        public async Task<IActionResult> Create([Bind("DELIVERY_NUM,ORDER_NUM,USER_ID,DELIVERY_DATE,BOOK_QUANTITY,BOOK_NUM,BOOK_NAME,ADDRESS,TEL")] BookDelivery bookDelivery)
         {
             if (ModelState.IsValid)
             {
@@ -65,58 +89,6 @@ namespace SrmBook.Controllers
             return View(bookDelivery);
         }
 
-        // GET: BookDelivery/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.BookDelivery == null)
-            {
-                return NotFound();
-            }
-
-            var bookDelivery = await _context.BookDelivery.FindAsync(id);
-            if (bookDelivery == null)
-            {
-                return NotFound();
-            }
-            return View(bookDelivery);
-        }
-
-        // POST: BookDelivery/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DELIVERY_NUM,ORDER_NUM,USER_ID,DELIVERY_DATE,BOOK_QUANTITY,BOOK_NUM,BOOK_NAME,ADDRESS,TEL,STATUS")] BookDelivery bookDelivery)
-        {
-            if (id != bookDelivery.DELIVERY_NUM)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(bookDelivery);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BookDeliveryExists(bookDelivery.DELIVERY_NUM))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(bookDelivery);
-        }
-
-        // GET: BookDelivery/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.BookDelivery == null)
@@ -134,7 +106,6 @@ namespace SrmBook.Controllers
             return View(bookDelivery);
         }
 
-        // POST: BookDelivery/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -148,14 +119,14 @@ namespace SrmBook.Controllers
             {
                 _context.BookDelivery.Remove(bookDelivery);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool BookDeliveryExists(int id)
         {
-          return _context.BookDelivery.Any(e => e.DELIVERY_NUM == id);
+            return _context.BookDelivery.Any(e => e.DELIVERY_NUM == id);
         }
     }
 }

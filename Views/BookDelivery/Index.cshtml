@@ -1,83 +1,166 @@
-@model IEnumerable<SrmBook.Models.BookDelivery>
+@model SrmBook.Models.BookDeliveryComposite
 
 @{
     ViewData["Title"] = "Index";
+    var Key = Context.Session.GetString("USER_SESSION_KEY");
+    var admin = Context.Session.GetString("USER_TYPE_KEY");
 }
 
-<h1>Index</h1>
+<fieldset style="margin-top: 50px;">
+    <legend>배송 내역</legend>
+</fieldset>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table style="margin-top: 10px;" class="table table-hover">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ORDER_NUM)
+        <tr class="table-dark">
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.BookDelivery.FirstOrDefault().DELIVERY_NUM)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.USER_ID)
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.BookDelivery.FirstOrDefault().ORDER_NUM)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DELIVERY_DATE)
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.BookDelivery.FirstOrDefault().USER_ID)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BOOK_QUANTITY)
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.BookDelivery.FirstOrDefault().DELIVERY_DATE)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BOOK_NUM)
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.BookDelivery.FirstOrDefault().BOOK_QUANTITY)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BOOK_NAME)
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.BookDelivery.FirstOrDefault().BOOK_NUM)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ADDRESS)
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.BookDelivery.FirstOrDefault().BOOK_NAME)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TEL)
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.BookDelivery.FirstOrDefault().ADDRESS)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.STATUS)
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.BookDelivery.FirstOrDefault().TEL)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ORDER_NUM)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.USER_ID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DELIVERY_DATE)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BOOK_QUANTITY)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BOOK_NUM)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BOOK_NAME)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ADDRESS)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TEL)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.STATUS)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.DELIVERY_NUM">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.DELIVERY_NUM">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.DELIVERY_NUM">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.BookDelivery)
+        {
+            if (item.USER_ID == Key || admin == "admin")//로그인한 사람만 보기 가능, 관리자는 전부 보기 가능
+            {
+                <tr class="table-dark">
+                    <td scope="row">
+                        @Html.DisplayFor(modelItem => item.DELIVERY_NUM)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ORDER_NUM)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.USER_ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DELIVERY_DATE)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BOOK_QUANTITY)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BOOK_NUM)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BOOK_NAME)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ADDRESS)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TEL)
+                    </td>
+                    <td>
+                        @if (admin == "admin")
+                        {
+                            <a class="btn btn-outline-light" asp-action="Delete" asp-route-id="@item.DELIVERY_NUM">배송취소</a>
+                        }
+                    </td>
+                </tr>
+            }
+        }
     </tbody>
 </table>
+
+
+<fieldset style="margin-top: 50px;">
+    <legend>발주 내역</legend>
+</fieldset>
+
+@* 발주 테이블 *@
+<table style="margin-top: 10px;" class="table table-hover">
+    <thead>
+        <tr class="table-dark">
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.BookOrder.FirstOrDefault().USER_ID)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.BookOrder.FirstOrDefault().ORDER_DATE)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.BookOrder.FirstOrDefault().BOOK_QUANTITY)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.BookOrder.FirstOrDefault().TOTAL_PRICE)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.BookOrder.FirstOrDefault().BOOK_NAME)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.BookOrder.FirstOrDefault().BOOK_NUM)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.BookOrder)
+        {
+            if (item.USER_ID == Key || admin == "admin")//로그인한 사람만 보기 가능, 관리자는 전부 보기 가능
+            {
+                <tr class="table-dark">
+                    <td scope="row">
+                        @Html.DisplayFor(modelItem => item.USER_ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ORDER_DATE)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BOOK_QUANTITY)
+                    </td>
+                    @* 소수점 및 콤마 추가 *@
+                    <td>
+                        @{
+                            decimal totalPrice = item.TOTAL_PRICE;
+                            int totalPriceInt = Decimal.ToInt32(totalPrice);
+                        }
+                        @totalPriceInt.ToString("N0")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BOOK_NAME)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BOOK_NUM)
+                    </td>
+                    <td>
+                        @if (item.ORDER_CONFIRMED)
+                        {
+                            <a style="margin-left: 5px;" class="text-success">발주 확인됨</a>
+                            @if (admin == "admin")
+                            {
+                                <a style="margin-left: 5px;" class="btn btn-outline-light" asp-action="Create"
+                                    asp-controller="BookDelivery" asp-route-orderNum="@item.ORDER_NUM">배송하기</a>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+

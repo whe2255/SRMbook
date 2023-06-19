@@ -50,7 +50,6 @@ namespace SrmBook.Controllers
             return View(bookOrder);
         }
 
-
         public IActionResult Create()
         {
             return View();

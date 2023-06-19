@@ -38,15 +38,4 @@ public class BookDelivery
     [Required(ErrorMessage = "연락처를 입력하세요")]
     [RegularExpression(@"^\d{3}-\d{3,4}-\d{4}$", ErrorMessage = "유효한 전화번호 형식이 아닙니다, -를 입력해주세요")]
     public string TEL { get; set; }
-
-    [Display(Name = "배송 상태")]
-    public DeliveryStatus STATUS { get; set; }
-
-    public enum DeliveryStatus
-    {
-        [Display(Name = "배송중")]
-        InTransit,
-        [Display(Name = "배송 완료")]
-        Delivered
-    }
 }
