@@ -10,6 +10,29 @@
     <legend>배송 내역</legend>
 </fieldset>
 
+@* 날짜별 제목별 검색 *@
+@using (Html.BeginForm("Index", "BookDelivery", FormMethod.Get))
+{
+    <div>
+        <p style="display: inline-block;">도서 제목으로 검색 :</p>
+        <p style="display: inline-block;">
+            @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
+        </p>
+        <p style="display: inline-block;">
+            <input class="form-control me-sm-2" type="submit" value="Search" />
+        </p>
+    </div>
+
+    <div>
+        <p style="display: inline-block;">날짜별로 검색 :</p>
+        <p style="display: inline-block;">
+            @Html.TextBox("searchDate", ViewBag.CurrentDate as string, new { @class = "datepicker form-control" })
+        </p>
+        <p style="display: inline-block;">
+            <input class="form-control me-sm-2" type="submit" value="Search" />
+        </p>
+    </div>
+}
 <table style="margin-top: 10px;" class="table table-hover">
     <thead>
         <tr class="table-dark">
@@ -88,7 +111,6 @@
     </tbody>
 </table>
 
-
 <fieldset style="margin-top: 50px;">
     <legend>발주 내역</legend>
 </fieldset>
@@ -154,7 +176,7 @@
                             @if (admin == "admin")
                             {
                                 <a style="margin-left: 5px;" class="btn btn-outline-light" asp-action="Create"
-                                    asp-controller="BookDelivery" asp-route-orderNum="@item.ORDER_NUM">배송하기</a>
+                                    asp-controller="BookDelivery" asp-route-orderNum="@item.ORDER_NUM">배송하기</a>//발주의 order_num의 값을 보내기
                             }
                         }
                     </td>
@@ -163,4 +185,15 @@
         }
     </tbody>
 </table>
+
+@* datepicker *@
+@section Scripts {
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $(".datepicker").datepicker();
+        });
+    </script>
+}
 

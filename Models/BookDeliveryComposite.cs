@@ -5,6 +5,6 @@ namespace SrmBook.Models;
 public class BookDeliveryComposite
 
 {
-    public List<BookOrder> BookOrder { get; set; }
-    public List<BookDelivery> BookDelivery { get; set; }
+    public IEnumerable<BookOrder> BookOrder { get; set; }
+    public IEnumerable<BookDelivery> BookDelivery { get; set; }
 }

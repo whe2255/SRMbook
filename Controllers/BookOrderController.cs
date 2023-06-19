@@ -55,18 +55,16 @@ namespace SrmBook.Controllers
             return View();
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ORDER_NUM,USER_ID,ORDER_DATE,BOOK_QUANTITY,TOTAL_PRICE,BOOK_NAME,BOOK_NUM")] BookOrder bookOrder)
         {
             if (ModelState.IsValid)
             {
-                //발주 시 도서 재고에 있는 도서 제목과 도서 번호가 일치하는지 확인
-                var bookInventory = await _context.BookInventory.FirstOrDefaultAsync(b => b.BOOK_NAME == bookOrder.BOOK_NAME);
-                var bookNum = await _context.BookInventory.FirstOrDefaultAsync(c => c.BOOK_NUM == bookOrder.BOOK_NUM);
+                // 발주 시 도서 재고에 있는 도서 제목과 도서 번호가 일치하는지 확인
+                var bookInventory = await _context.BookInventory.FirstOrDefaultAsync(b => b.BOOK_NAME == bookOrder.BOOK_NAME && b.BOOK_NUM == bookOrder.BOOK_NUM);
 
-                if (bookInventory == null || bookNum == null)
+                if (bookInventory == null)
                 {
                     ModelState.AddModelError(string.Empty, "도서 제목이나 도서 번호를 확인해주세요");
                     return View(bookOrder);
@@ -90,6 +88,7 @@ namespace SrmBook.Controllers
             }
             return View(bookOrder);
         }
+
 
         public async Task<IActionResult> Delete(int? id)
         {
@@ -128,7 +127,7 @@ namespace SrmBook.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        
+
         //발주 확인 메소드
         public async Task<IActionResult> ConfirmOrder(int orderId)
         {
