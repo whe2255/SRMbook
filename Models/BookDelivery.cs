@@ -32,9 +32,11 @@ public class BookDelivery
     [Required(ErrorMessage = "도서제목을 입력해주세요")]
     public string BOOK_NAME { get; set; }
 
+    [Display(Name = "주소")]
     [Required(ErrorMessage = "주소를 입력하세요")]
     public string ADDRESS { get; set; }
 
+    [Display(Name = "연락처")]
     [Required(ErrorMessage = "연락처를 입력하세요")]
     [RegularExpression(@"^\d{3}-\d{3,4}-\d{4}$", ErrorMessage = "유효한 전화번호 형식이 아닙니다, -를 입력해주세요")]
     public string TEL { get; set; }

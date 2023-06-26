@@ -14,14 +14,14 @@ namespace SrmBook.Controllers
         {
             _context = context;
         }
-
-        public async Task<IActionResult> Index(string searchString, string BookGenre)
+        public async Task<IActionResult> Index(string searchString, string BookGenre, int page = 1)
         {
             if (_context.BookClassification == null)
             {
                 return Problem("Entity set 'BookClassification' is null.");
             }
-            //검색 쿼리
+
+            // 검색 쿼리
             IQueryable<string> genreQuery = from m in _context.BookClassification
                                             orderby m.BOOK_CLASS
                                             select m.BOOK_CLASS;
@@ -31,9 +31,21 @@ namespace SrmBook.Controllers
 
             var BookSearchView = await SearchBooks(searchString, BookGenre, genreQuery, BookClassification);
 
+            // 페이징 처리
+            int pageSize = 5; // 페이지당 도서 개수
+
+            var pagedBooks = PaginateBooks(BookSearchView.BookClassification, page, pageSize);
+
+            int totalBooks = BookSearchView.BookClassification.Count(); // 전체 도서 개수
+
+            BookSearchView.PagedBooks = pagedBooks;
+            BookSearchView.CurrentPage = page;
+            BookSearchView.PageSize = pageSize;
+            BookSearchView.TotalBooks = totalBooks;
+
             return View(BookSearchView);
         }
-
+        
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.BookClassification == null)
@@ -72,7 +84,6 @@ namespace SrmBook.Controllers
             return View(bookClassification);
         }
 
-
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.BookClassification == null)
@@ -87,7 +98,6 @@ namespace SrmBook.Controllers
             }
             return View(bookClassification);
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -121,7 +131,6 @@ namespace SrmBook.Controllers
             }
             return View(bookClassification);
         }
-
 
         public async Task<IActionResult> Delete(int? id)
         {
@@ -162,6 +171,7 @@ namespace SrmBook.Controllers
         {
             return _context.BookClassification.Any(e => e.BOOK_NUM == id);
         }
+
         //image파일 바이너리로 변환 메소드
         private async Task ProcessImageFile(BookClassification bookClassification, IFormFile imageFile)
         {
@@ -174,6 +184,7 @@ namespace SrmBook.Controllers
                 }
             }
         }
+
         //검색 메소드 
         private async Task<BookSearchView> SearchBooks(string searchString, string BookGenre, IQueryable<string> genreQuery, IQueryable<BookClassification> BookClassification)
         {
@@ -194,6 +205,15 @@ namespace SrmBook.Controllers
             };
 
             return BookSearchView;
+        }
+
+        //페이징 처리
+        private List<BookClassification> PaginateBooks(List<BookClassification> books, int page, int pageSize)
+        {
+            return books
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
         }
     }
 }

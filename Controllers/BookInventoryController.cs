@@ -15,7 +15,7 @@ namespace SrmBook.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string searchString, string BookGenre)
+        public async Task<IActionResult> Index(string searchString, string BookGenre, int page = 1)
         {
             if (_context.BookInventory == null)
             {
@@ -30,6 +30,18 @@ namespace SrmBook.Controllers
                                 select m;
 
             var BookSearchView = await SearchBooks(searchString, BookGenre, genreQuery, BookInventory);
+            // 페이징 처리
+            int pageSize = 5; // 페이지당 도서 개수
+
+            var pagedBooks2 = PaginateBooks(BookSearchView.BookInventory, page, pageSize);
+
+            int totalBooks = BookSearchView.BookInventory.Count(); // 전체 도서 개수
+
+            BookSearchView.PagedBooks2 = pagedBooks2;
+            BookSearchView.CurrentPage = page;
+            BookSearchView.PageSize = pageSize;
+            BookSearchView.TotalBooks = totalBooks;
+
 
             return View(BookSearchView);
         }
@@ -150,10 +162,12 @@ namespace SrmBook.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
         private bool BookInventoryExists(int id)
         {
             return _context.BookInventory.Any(e => e.BOOK_NUM == id);
         }
+
         //검색 메소드
         private async Task<BookSearchView> SearchBooks(string searchString, string BookGenre, IQueryable<string> genreQuery, IQueryable<BookInventory> BookInventory)
         {
@@ -174,6 +188,15 @@ namespace SrmBook.Controllers
             };
 
             return BookSearchView;
+        }
+
+        //페이징 처리
+        private List<BookInventory> PaginateBooks(List<BookInventory> books, int page, int pageSize)
+        {
+            return books
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
         }
     }
 }
