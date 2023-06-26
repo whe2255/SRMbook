@@ -12,8 +12,8 @@ public class BookSearchView
     public string SearchString { get; set; }
 
     // 페이징 처리를 위한 속성
-    public List<BookClassification> PagedBooks { get; set; } // 페이징 처리된 도서 목록
-    public List<BookInventory> PagedBooks2 { get; set; } // 페이징 처리된 도서 목록
+    public List<BookClassification> PagedBooksClassification { get; set; } // 페이징 처리된 도서 목록
+    public List<BookInventory> PagedBooksInventory { get; set; } // 페이징 처리된 도서 목록
     public int CurrentPage { get; set; } // 현재 페이지 번호
     public int PageSize { get; set; } // 페이지당 도서 개수
     public int TotalBooks { get; set; } // 전체 도서 개수

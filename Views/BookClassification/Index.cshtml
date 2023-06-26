@@ -31,25 +31,25 @@
     <thead>
         <tr class="table-dark">
             <th scope="col">
-                @Html.DisplayNameFor(model => model.PagedBooks[0].BOOK_IMAGE)
+                @Html.DisplayNameFor(model => model.PagedBooksClassification[0].BOOK_IMAGE)
             </th>
             <th scope="col">
-                @Html.DisplayNameFor(model => model.PagedBooks[0].BOOK_CLASS)
+                @Html.DisplayNameFor(model => model.PagedBooksClassification[0].BOOK_CLASS)
             </th>
             <th scope="col">
-                @Html.DisplayNameFor(model => model.PagedBooks[0].BOOK_NAME)
+                @Html.DisplayNameFor(model => model.PagedBooksClassification[0].BOOK_NAME)
             </th>
             <th scope="col">
-                @Html.DisplayNameFor(model => model.PagedBooks[0].BOOK_WRITER)
+                @Html.DisplayNameFor(model => model.PagedBooksClassification[0].BOOK_WRITER)
             </th>
             <th scope="col">
-                @Html.DisplayNameFor(model => model.PagedBooks[0].BOOK_PRICE)
+                @Html.DisplayNameFor(model => model.PagedBooksClassification[0].BOOK_PRICE)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.PagedBooks)
+        @foreach (var item in Model.PagedBooksClassification)
         {
             <tr class="table-dark">
                 <td scope="row">

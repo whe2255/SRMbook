@@ -38,7 +38,7 @@ namespace SrmBook.Controllers
 
             int totalBooks = BookSearchView.BookClassification.Count(); // 전체 도서 개수
 
-            BookSearchView.PagedBooks = pagedBooks;
+            BookSearchView.PagedBooksClassification = pagedBooks;
             BookSearchView.CurrentPage = page;
             BookSearchView.PageSize = pageSize;
             BookSearchView.TotalBooks = totalBooks;

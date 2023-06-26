@@ -33,11 +33,11 @@ namespace SrmBook.Controllers
             // 페이징 처리
             int pageSize = 5; // 페이지당 도서 개수
 
-            var pagedBooks2 = PaginateBooks(BookSearchView.BookInventory, page, pageSize);
+            var pagedBooks = PaginateBooks(BookSearchView.BookInventory, page, pageSize);
 
             int totalBooks = BookSearchView.BookInventory.Count(); // 전체 도서 개수
 
-            BookSearchView.PagedBooks2 = pagedBooks2;
+            BookSearchView.PagedBooksInventory = pagedBooks;
             BookSearchView.CurrentPage = page;
             BookSearchView.PageSize = pageSize;
             BookSearchView.TotalBooks = totalBooks;
