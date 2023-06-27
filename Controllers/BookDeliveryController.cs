@@ -22,7 +22,7 @@ namespace SrmBook.Controllers
             //발주와 배송
             var bookDelivery = await _context.BookDelivery.ToListAsync();
             var bookOrder = await _context.BookOrder.ToListAsync();
-
+            
             // 복합ViewModel에 데이터 할당
             var bookDeliveryComposite = new BookDeliveryComposite
             {

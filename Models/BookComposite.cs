@@ -1,9 +1,17 @@
-namespace SrmBook.Models;
-//발주와 재고의 복합 뷰 모델
-public class BookComposite
-
+namespace SrmBook.Models
 {
-    public IEnumerable<BookOrder> BookOrders { get; set; }
-    public IEnumerable<BookInventory> BookInventory { get; set; }
+    public class BookComposite
+    {
+        public IEnumerable<BookOrder> BookOrders { get; set; }
+        public IEnumerable<BookInventory> BookInventory { get; set; }
+        public PageInfo PageInfo { get; set; }
+    }
 
+    public class PageInfo
+    {
+        public int TotalItems { get; set; }
+        public int CurrentPage { get; set; }
+        public int ItemsPerPage { get; set; }
+        public int TotalPages => (int)Math.Ceiling((decimal)TotalItems / ItemsPerPage);
+    }
 }

@@ -17,7 +17,7 @@
         <a class="btn btn-outline-light" asp-action="Create">발주</a>
     </div>
     </p>
-    //날짜별 제목별 검색
+                //날짜별 제목별 검색
     @using (Html.BeginForm("Index", "BookOrder", FormMethod.Get))
     {
         <div>
@@ -120,9 +120,37 @@
         </tbody>
     </table>
 
+    // 페이징처리
+    @if (Model.PageInfo.TotalPages > 1)
+    {
+        <div class="pagination, btn btn-outline-light">
+            @if (Model.PageInfo.CurrentPage > 1)
+            {
+                @Html.ActionLink("이전", "Index", new { page = Model.PageInfo.CurrentPage - 1 })
+            }
+            @if (Model.PageInfo.CurrentPage < Model.PageInfo.TotalPages)
+            {
+                @Html.ActionLink("다음", "Index", new { page = Model.PageInfo.CurrentPage + 1 })
+            }
+        </div>
+    }
+
     <fieldset style="margin-top: 50px;">
         <legend>도서 재고</legend>
     </fieldset>
+
+    @using (Html.BeginForm("Index", "BookOrder", FormMethod.Get))
+    {
+        <div>
+            <p style="display: inline-block;">도서 제목으로 검색 :</p>
+            <p style="display: inline-block;">
+                @Html.TextBox("searchStr", ViewBag.CurrentFilter as string, new { @class = "form-control" })
+            </p>
+            <p style="display: inline-block;">
+                <input class="form-control me-sm-2" type="submit" value="Search" />
+            </p>
+        </div>
+    }
     //재고 테이블
     <table style="margin-top: 10px;" class="table table-hover">
         <thead>
@@ -164,6 +192,21 @@
             }
         </tbody>
     </table>
+
+    // 페이징처리
+    @if (Model.PageInfo.TotalPages > 1)
+    {
+        <div class="pagination, btn btn-outline-light">
+            @if (Model.PageInfo.CurrentPage > 1)
+            {
+                @Html.ActionLink("이전", "Index", new { page = Model.PageInfo.CurrentPage - 1 })
+            }
+            @if (Model.PageInfo.CurrentPage < Model.PageInfo.TotalPages)
+            {
+                @Html.ActionLink("다음", "Index", new { page = Model.PageInfo.CurrentPage + 1 })
+            }
+        </div>
+    }
 
     //datepicker
     @section Scripts

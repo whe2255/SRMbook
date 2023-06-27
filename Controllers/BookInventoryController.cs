@@ -25,7 +25,7 @@ namespace SrmBook.Controllers
             IQueryable<string> genreQuery = from m in _context.BookInventory
                                             orderby m.BOOK_CLASS
                                             select m.BOOK_CLASS;
-
+                                            
             var BookInventory = from m in _context.BookInventory
                                 select m;
 

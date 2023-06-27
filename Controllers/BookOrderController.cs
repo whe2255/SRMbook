@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SrmBook.Data;
 using SrmBook.Models;
@@ -14,20 +15,53 @@ namespace SrmBook.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string searchString, DateTime? searchDate)
+        public async Task<IActionResult> Index(string searchString, string searchStr, DateTime? searchDate, int? page)
         {
+            int itemsPerPage = 5; // 페이지당 항목 수
+            int currentPage = page ?? 1; // 현재 페이지 (기본값: 1)
+
             // 발주 검색
             var bookOrders = await SearchBookOrders(searchString, searchDate);
 
+            // 페이징 처리 - bookOrders
+            var totalOrderItems = bookOrders.Count();
+            var pagedBookOrders = bookOrders.Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage);
+
             // 재고 정보 가져오기
             var bookInventory = await _context.BookInventory.ToListAsync();
+            var searchInventory = await SearchInventory(searchStr);
+            bookInventory = searchInventory;
 
-            // 복합ViewModel에 데이터 할당
+            // 페이징 처리 - bookInventory
+            var totalInventoryItems = bookInventory.Count();
+            var pagedBookInventory = bookInventory.Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage);
+
+            // 복합 ViewModel에 데이터 할당
             var bookComposite = new BookComposite
             {
-                BookOrders = bookOrders,
-                BookInventory = bookInventory
+                BookOrders = pagedBookOrders,
+                BookInventory = pagedBookInventory,
+                PageInfo = new PageInfo
+                {
+                    TotalItems = Math.Max(totalOrderItems, totalInventoryItems),
+                    CurrentPage = currentPage,
+                    ItemsPerPage = itemsPerPage
+                }
             };
+
+            // bookorder와 bookinventory가 각각 5개의 행을 넘으면 페이징 처리
+            if (totalOrderItems > itemsPerPage && totalInventoryItems > itemsPerPage)
+            {
+                bookComposite.PageInfo.TotalItems = Math.Max(totalOrderItems, totalInventoryItems);
+            }
+            else if (totalOrderItems > itemsPerPage)
+            {
+                bookComposite.PageInfo.TotalItems = totalOrderItems;
+            }
+            else if (totalInventoryItems > itemsPerPage)
+            {
+                bookComposite.PageInfo.TotalItems = totalInventoryItems;
+            }
 
             return View(bookComposite);
         }
@@ -89,7 +123,6 @@ namespace SrmBook.Controllers
             return View(bookOrder);
         }
 
-
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.BookOrder == null)
@@ -106,7 +139,6 @@ namespace SrmBook.Controllers
 
             return View(bookOrder);
         }
-
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -181,7 +213,6 @@ namespace SrmBook.Controllers
             return false; // 재고 부족으로 구매 불가능
         }
 
-
         //재고 수량 증가
         private async Task IncreaseBookInventory(int bookNum, int quantity)
         {
@@ -194,7 +225,7 @@ namespace SrmBook.Controllers
             }
         }
 
-        //검색 메소드
+        //발주 검색 메소드
         private async Task<List<BookOrder>> SearchBookOrders(string searchString, DateTime? searchDate)
         {
             var bookOrders = from m in _context.BookOrder
@@ -215,6 +246,19 @@ namespace SrmBook.Controllers
             }
 
             return await bookOrders.ToListAsync();
+        }
+
+        //재고 검색 메소드
+        private async Task<List<BookInventory>> SearchInventory(string searchStr)
+        {
+            var BookInventory = from m in _context.BookInventory
+                                select m;
+
+            if (!String.IsNullOrEmpty(searchStr))
+            {
+                BookInventory = BookInventory.Where(s => s.BOOK_NAME.Contains(searchStr));
+            }
+            return await BookInventory.ToListAsync();
         }
     }
 }

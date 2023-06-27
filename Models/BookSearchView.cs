@@ -5,6 +5,7 @@ namespace SrmBook.Models;
 // 장르별 검색용 뷰
 public class BookSearchView
 {
+    //검색을 위한 속성
     public List<BookClassification> BookClassification { get; set; }
     public List<BookInventory> BookInventory { get; set; }
     public SelectList Genre { get; set; }
