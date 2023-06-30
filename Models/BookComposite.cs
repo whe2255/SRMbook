@@ -4,7 +4,8 @@ namespace SrmBook.Models
     {
         public IEnumerable<BookOrder> BookOrders { get; set; }
         public IEnumerable<BookInventory> BookInventory { get; set; }
-        public PageInfo PageInfo { get; set; }
+        public PageInfo OrderPageInfo { get; set; }
+        public PageInfo InventoryPageInfo { get; set; }
     }
 
     public class PageInfo

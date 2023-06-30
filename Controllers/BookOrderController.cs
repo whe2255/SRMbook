@@ -15,53 +15,44 @@ namespace SrmBook.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string searchString, string searchStr, DateTime? searchDate, int? page)
+        public async Task<IActionResult> Index(string searchString, string searchStr, DateTime? searchDate, int? orderPage, int? inventoryPage)
         {
             int itemsPerPage = 5; // 페이지당 항목 수
-            int currentPage = page ?? 1; // 현재 페이지 (기본값: 1)
+            int orderCurrentPage = orderPage ?? 1; // 발주 페이지 (기본값: 1)
+            int inventoryCurrentPage = inventoryPage ?? 1; // 재고 페이지 (기본값: 1)
 
             // 발주 검색
             var bookOrders = await SearchBookOrders(searchString, searchDate);
 
             // 페이징 처리 - bookOrders
             var totalOrderItems = bookOrders.Count();
-            var pagedBookOrders = bookOrders.Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage);
+            var pagedBookOrders = bookOrders.Skip((orderCurrentPage - 1) * itemsPerPage).Take(itemsPerPage);
 
             // 재고 정보 가져오기
             var bookInventory = await _context.BookInventory.ToListAsync();
             var searchInventory = await SearchInventory(searchStr);
             bookInventory = searchInventory;
-
-            // 페이징 처리 - bookInventory
             var totalInventoryItems = bookInventory.Count();
-            var pagedBookInventory = bookInventory.Skip((currentPage - 1) * itemsPerPage).Take(itemsPerPage);
+            var pagedBookInventory = bookInventory.Skip((inventoryCurrentPage - 1) * itemsPerPage).Take(itemsPerPage);
 
             // 복합 ViewModel에 데이터 할당
             var bookComposite = new BookComposite
             {
                 BookOrders = pagedBookOrders,
                 BookInventory = pagedBookInventory,
-                PageInfo = new PageInfo
+                OrderPageInfo = new PageInfo
                 {
-                    TotalItems = Math.Max(totalOrderItems, totalInventoryItems),
-                    CurrentPage = currentPage,
+                    TotalItems = totalOrderItems,
+                    CurrentPage = orderCurrentPage,
+                    ItemsPerPage = itemsPerPage
+                },
+                InventoryPageInfo = new PageInfo
+                {
+                    TotalItems = totalInventoryItems,
+                    CurrentPage = inventoryCurrentPage,
                     ItemsPerPage = itemsPerPage
                 }
             };
-
-            // bookorder와 bookinventory가 각각 5개의 행을 넘으면 페이징 처리
-            if (totalOrderItems > itemsPerPage && totalInventoryItems > itemsPerPage)
-            {
-                bookComposite.PageInfo.TotalItems = Math.Max(totalOrderItems, totalInventoryItems);
-            }
-            else if (totalOrderItems > itemsPerPage)
-            {
-                bookComposite.PageInfo.TotalItems = totalOrderItems;
-            }
-            else if (totalInventoryItems > itemsPerPage)
-            {
-                bookComposite.PageInfo.TotalItems = totalInventoryItems;
-            }
 
             return View(bookComposite);
         }

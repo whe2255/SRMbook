@@ -120,20 +120,21 @@
         </tbody>
     </table>
 
-    // 페이징처리
-    @if (Model.PageInfo.TotalPages > 1)
+     <!-- 발주 페이징 -->
+    @if (Model.OrderPageInfo.TotalPages > 1)
     {
-        <div class="pagination, btn btn-outline-light">
-            @if (Model.PageInfo.CurrentPage > 1)
+        <div class="pagination">
+            @if (Model.OrderPageInfo.CurrentPage > 1)
             {
-                @Html.ActionLink("이전", "Index", new { page = Model.PageInfo.CurrentPage - 1 })
+                @Html.ActionLink("이전", "Index", new { orderPage = Model.OrderPageInfo.CurrentPage - 1 }, new { @class = "btn btn-outline-light" })
             }
-            @if (Model.PageInfo.CurrentPage < Model.PageInfo.TotalPages)
+            @if (Model.OrderPageInfo.CurrentPage < Model.OrderPageInfo.TotalPages)
             {
-                @Html.ActionLink("다음", "Index", new { page = Model.PageInfo.CurrentPage + 1 })
+                @Html.ActionLink("다음", "Index", new { orderPage = Model.OrderPageInfo.CurrentPage + 1 }, new { @class = "btn btn-outline-light" })
             }
         </div>
     }
+
 
     <fieldset style="margin-top: 50px;">
         <legend>도서 재고</legend>
@@ -193,20 +194,21 @@
         </tbody>
     </table>
 
-    // 페이징처리
-    @if (Model.PageInfo.TotalPages > 1)
+      <!-- 재고 페이징 -->
+    @if (Model.InventoryPageInfo.TotalPages > 1)
     {
-        <div class="pagination, btn btn-outline-light">
-            @if (Model.PageInfo.CurrentPage > 1)
+        <div class="pagination">
+            @if (Model.InventoryPageInfo.CurrentPage > 1)
             {
-                @Html.ActionLink("이전", "Index", new { page = Model.PageInfo.CurrentPage - 1 })
+                @Html.ActionLink("이전", "Index", new { inventoryPage = Model.InventoryPageInfo.CurrentPage - 1 }, new { @class = "btn btn-outline-light" })
             }
-            @if (Model.PageInfo.CurrentPage < Model.PageInfo.TotalPages)
+            @if (Model.InventoryPageInfo.CurrentPage < Model.InventoryPageInfo.TotalPages)
             {
-                @Html.ActionLink("다음", "Index", new { page = Model.PageInfo.CurrentPage + 1 })
+                @Html.ActionLink("다음", "Index", new { inventoryPage = Model.InventoryPageInfo.CurrentPage + 1 }, new { @class = "btn btn-outline-light" })
             }
         </div>
     }
+
 
     //datepicker
     @section Scripts
