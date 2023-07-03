@@ -15,19 +15,45 @@ namespace SrmBook.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string searchString, DateTime? searchDate)
+        public async Task<IActionResult> Index(string searchString, DateTime? searchDate, int? orderPage, int? deliveryPage)
         {
+
+            int itemsPerPage = 5; // 페이지당 항목 수
+            int orderCurrentPage = orderPage ?? 1; // 발주 페이지 (기본값: 1)
+            int deliveryCurrentPage = deliveryPage ?? 1; // 배송 페이지 (기본값: 1)
+
+            // 로그인한 사용자의 정보를 세션에서 가져옴
+            var currentUser = HttpContext.Session.GetString("USER_SESSION_KEY");
             //배송 검색
-            var bookDeliverys = await SearchBookOrders(searchString, searchDate);
-            //발주와 배송
-            var bookDelivery = await _context.BookDelivery.ToListAsync();
-            var bookOrder = await _context.BookOrder.ToListAsync();
-            
+            var bookDeliverys = await SearchBookDeliverys(searchString, searchDate, currentUser);
+            //발주 검색
+            var bookOrders = await SearchBookOrders(searchString, searchDate, currentUser);
+
+            // 페이징 처리 - bookDelivery
+            var totalDeliveryItems = bookDeliverys.Count();
+            var pagedBookDeliverys = bookDeliverys.Skip((deliveryCurrentPage - 1) * itemsPerPage).Take(itemsPerPage);
+
+            // 페이징 처리 - bookOrder
+            var totalOrderItems = bookOrders.Count();
+            var pagedBookOrders = bookOrders.Skip((orderCurrentPage - 1) * itemsPerPage).Take(itemsPerPage);
+
             // 복합ViewModel에 데이터 할당
             var bookDeliveryComposite = new BookDeliveryComposite
             {
-                BookOrder = bookOrder,
-                BookDelivery = bookDeliverys
+                BookOrder = pagedBookOrders,
+                BookDelivery = pagedBookDeliverys,
+                OrderPageInfo = new BookDeliveryComposite.PageInfo
+                {
+                    TotalItems = totalOrderItems,
+                    CurrentPage = orderCurrentPage,
+                    ItemsPerPage = itemsPerPage
+                },
+                DeliveryPageInfo = new BookDeliveryComposite.PageInfo
+                {
+                    TotalItems = totalDeliveryItems,
+                    CurrentPage = deliveryCurrentPage,
+                    ItemsPerPage = itemsPerPage
+                },
             };
 
             return View(bookDeliveryComposite);
@@ -133,9 +159,10 @@ namespace SrmBook.Controllers
         }
 
         //검색 메소드
-        private async Task<List<BookDelivery>> SearchBookOrders(string searchString, DateTime? searchDate)
+        private async Task<List<BookDelivery>> SearchBookDeliverys(string searchString, DateTime? searchDate, string currentUser)
         {
             var bookDeliverys = from m in _context.BookDelivery
+                                where m.USER_ID == currentUser
                                 select m;
 
             if (!String.IsNullOrEmpty(searchString))
@@ -153,6 +180,30 @@ namespace SrmBook.Controllers
             }
 
             return await bookDeliverys.ToListAsync();
+        }
+
+        //발주 검색 메소드
+        private async Task<List<BookOrder>> SearchBookOrders(string searchString, DateTime? searchDate, string currentUser)
+        {
+            var bookOrders = from m in _context.BookOrder
+                             where m.USER_ID == currentUser
+                             select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                bookOrders = bookOrders.Where(s => s.BOOK_NAME.Contains(searchString));
+            }
+
+            if (searchDate.HasValue)
+            {
+                // 검색한 날짜의 시작 시간과 끝 시간 계산
+                DateTime startDate = searchDate.Value.Date;
+                DateTime endDate = searchDate.Value.AddDays(1).Date;
+
+                bookOrders = bookOrders.Where(s => s.ORDER_DATE >= startDate && s.ORDER_DATE < endDate);
+            }
+
+            return await bookOrders.ToListAsync();
         }
     }
 }

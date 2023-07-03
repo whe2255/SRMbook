@@ -111,6 +111,21 @@
     </tbody>
 </table>
 
+  <!-- 배송 페이징 -->
+    @if (Model.DeliveryPageInfo.TotalPages > 1)
+    {
+        <div class="pagination">
+            @if (Model.DeliveryPageInfo.CurrentPage > 1)
+            {
+                @Html.ActionLink("이전", "Index", new { deliveryPage = Model.DeliveryPageInfo.CurrentPage - 1 }, new { @class = "btn btn-outline-light" })
+            }
+            @if (Model.DeliveryPageInfo.CurrentPage < Model.DeliveryPageInfo.TotalPages)
+            {
+                @Html.ActionLink("다음", "Index", new { deliveryPage = Model.DeliveryPageInfo.CurrentPage + 1 }, new { @class = "btn btn-outline-light" })
+            }
+        </div>
+    }
+
 <fieldset style="margin-top: 50px;">
     <legend>발주 내역</legend>
 </fieldset>
@@ -185,6 +200,21 @@
         }
     </tbody>
 </table>
+
+  <!-- 발주 페이징 -->
+    @if (Model.OrderPageInfo.TotalPages > 1)
+    {
+        <div class="pagination">
+            @if (Model.OrderPageInfo.CurrentPage > 1)
+            {
+                @Html.ActionLink("이전", "Index", new { orderPage = Model.OrderPageInfo.CurrentPage - 1 }, new { @class = "btn btn-outline-light" })
+            }
+            @if (Model.OrderPageInfo.CurrentPage < Model.OrderPageInfo.TotalPages)
+            {
+                @Html.ActionLink("다음", "Index", new { orderPage = Model.OrderPageInfo.CurrentPage + 1 }, new { @class = "btn btn-outline-light" })
+            }
+        </div>
+    }
 
 @* datepicker *@
 @section Scripts {

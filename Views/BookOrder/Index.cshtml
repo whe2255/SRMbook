@@ -12,11 +12,14 @@
 
 @if (Key != null)
 {
+    @if(admin != "admin")
+    {
     <p>
     <div style="margin-top: 30px;">
         <a class="btn btn-outline-light" asp-action="Create">발주</a>
     </div>
     </p>
+    }
                 //날짜별 제목별 검색
     @using (Html.BeginForm("Index", "BookOrder", FormMethod.Get))
     {

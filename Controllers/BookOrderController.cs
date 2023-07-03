@@ -21,19 +21,21 @@ namespace SrmBook.Controllers
             int orderCurrentPage = orderPage ?? 1; // 발주 페이지 (기본값: 1)
             int inventoryCurrentPage = inventoryPage ?? 1; // 재고 페이지 (기본값: 1)
 
+            // 로그인한 사용자의 정보를 세션에서 가져옴
+            var currentUser = HttpContext.Session.GetString("USER_SESSION_KEY");
+
             // 발주 검색
-            var bookOrders = await SearchBookOrders(searchString, searchDate);
+            var bookOrders = await SearchBookOrders(searchString, searchDate, currentUser);
+            // 재고 검색
+            var bookInventorys = await SearchInventory(searchStr);
 
             // 페이징 처리 - bookOrders
             var totalOrderItems = bookOrders.Count();
             var pagedBookOrders = bookOrders.Skip((orderCurrentPage - 1) * itemsPerPage).Take(itemsPerPage);
 
-            // 재고 정보 가져오기
-            var bookInventory = await _context.BookInventory.ToListAsync();
-            var searchInventory = await SearchInventory(searchStr);
-            bookInventory = searchInventory;
-            var totalInventoryItems = bookInventory.Count();
-            var pagedBookInventory = bookInventory.Skip((inventoryCurrentPage - 1) * itemsPerPage).Take(itemsPerPage);
+            // 페이징 처리 - bookInventory
+            var totalInventoryItems = bookInventorys.Count();
+            var pagedBookInventory = bookInventorys.Skip((inventoryCurrentPage - 1) * itemsPerPage).Take(itemsPerPage);
 
             // 복합 ViewModel에 데이터 할당
             var bookComposite = new BookComposite
@@ -216,10 +218,10 @@ namespace SrmBook.Controllers
             }
         }
 
-        //발주 검색 메소드
-        private async Task<List<BookOrder>> SearchBookOrders(string searchString, DateTime? searchDate)
+        private async Task<List<BookOrder>> SearchBookOrders(string searchString, DateTime? searchDate, string currentUser)
         {
             var bookOrders = from m in _context.BookOrder
+                             where m.USER_ID == currentUser // 사용자 식별자를 기준으로 발주 내역 필터링
                              select m;
 
             if (!String.IsNullOrEmpty(searchString))
@@ -239,6 +241,7 @@ namespace SrmBook.Controllers
             return await bookOrders.ToListAsync();
         }
 
+
         //재고 검색 메소드
         private async Task<List<BookInventory>> SearchInventory(string searchStr)
         {
@@ -251,5 +254,6 @@ namespace SrmBook.Controllers
             }
             return await BookInventory.ToListAsync();
         }
+
     }
 }
