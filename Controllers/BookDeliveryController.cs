@@ -24,10 +24,12 @@ namespace SrmBook.Controllers
 
             // 로그인한 사용자의 정보를 세션에서 가져옴
             var currentUser = HttpContext.Session.GetString("USER_SESSION_KEY");
+            var userType = HttpContext.Session.GetString("USER_TYPE_KEY");
+
             //배송 검색
-            var bookDeliverys = await SearchBookDeliverys(searchString, searchDate, currentUser);
+            var bookDeliverys = await SearchBookDeliverys(searchString, userType, searchDate, currentUser);
             //발주 검색
-            var bookOrders = await SearchBookOrders(searchString, searchDate, currentUser);
+            var bookOrders = await SearchBookOrders(searchString, userType, searchDate, currentUser);
 
             // 페이징 처리 - bookDelivery
             var totalDeliveryItems = bookDeliverys.Count();
@@ -159,11 +161,19 @@ namespace SrmBook.Controllers
         }
 
         //검색 메소드
-        private async Task<List<BookDelivery>> SearchBookDeliverys(string searchString, DateTime? searchDate, string currentUser)
+        private async Task<List<BookDelivery>> SearchBookDeliverys(string searchString, string userType, DateTime? searchDate, string currentUser)
         {
-            var bookDeliverys = from m in _context.BookDelivery
-                                where m.USER_ID == currentUser
-                                select m;
+            var bookDeliverys = _context.BookDelivery.AsQueryable();
+            if (IsAdminUser(userType))
+            {
+                // 관리자인 경우 모든 발주를 반환
+                bookDeliverys = bookDeliverys.Where(s => true);
+            }
+            else
+            {
+                // 일반 사용자인 경우 해당 사용자의 발주만 필터링
+                bookDeliverys = bookDeliverys.Where(s => s.USER_ID == currentUser);
+            }
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -172,10 +182,8 @@ namespace SrmBook.Controllers
 
             if (searchDate.HasValue)
             {
-                // 검색한 날짜의 시작 시간과 끝 시간 계산
                 DateTime startDate = searchDate.Value.Date;
                 DateTime endDate = searchDate.Value.AddDays(1).Date;
-
                 bookDeliverys = bookDeliverys.Where(s => s.DELIVERY_DATE >= startDate && s.DELIVERY_DATE < endDate);
             }
 
@@ -183,11 +191,20 @@ namespace SrmBook.Controllers
         }
 
         //발주 검색 메소드
-        private async Task<List<BookOrder>> SearchBookOrders(string searchString, DateTime? searchDate, string currentUser)
+        private async Task<List<BookOrder>> SearchBookOrders(string searchString, string userType, DateTime? searchDate, string currentUser)
         {
-            var bookOrders = from m in _context.BookOrder
-                             where m.USER_ID == currentUser
-                             select m;
+            var bookOrders = _context.BookOrder.AsQueryable();
+
+            if (IsAdminUser(userType))
+            {
+                // 관리자인 경우 모든 발주를 반환
+                bookOrders = bookOrders.Where(s => true);
+            }
+            else
+            {
+                // 일반 사용자인 경우 해당 사용자의 발주만 필터링
+                bookOrders = bookOrders.Where(s => s.USER_ID == currentUser);
+            }
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -196,14 +213,19 @@ namespace SrmBook.Controllers
 
             if (searchDate.HasValue)
             {
-                // 검색한 날짜의 시작 시간과 끝 시간 계산
                 DateTime startDate = searchDate.Value.Date;
                 DateTime endDate = searchDate.Value.AddDays(1).Date;
-
                 bookOrders = bookOrders.Where(s => s.ORDER_DATE >= startDate && s.ORDER_DATE < endDate);
             }
 
             return await bookOrders.ToListAsync();
+        }
+
+        private bool IsAdminUser(string userType)
+        {
+            // 세션을 통해 현재 사용자가 관리자인지 여부를 판별
+            // 예시: 세션에서 userType 값이 "admin"인 경우에만 관리자로 판별
+            return userType == "admin";
         }
     }
 }
